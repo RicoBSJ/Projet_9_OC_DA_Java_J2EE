@@ -44,7 +44,7 @@
     <!-- Dependencies -->
     <!-- =============================================================== -->
     <dependencies>
-    <!-- ===== Modules ===== -->
+        <!-- ===== Modules ===== -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>myerp-technical</artifactId>

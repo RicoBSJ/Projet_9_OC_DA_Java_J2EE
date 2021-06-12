@@ -8,7 +8,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class ComptabiliteManagerImplTest {
 

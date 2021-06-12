@@ -11,7 +11,7 @@
         <groupId>com.dummy.myerp</groupId>
         <artifactId>myerp</artifactId>
         <version>1.x.x-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>..</relativePath>
     </parent>
 
     <!-- ===== Maven ===== -->
@@ -114,7 +114,7 @@
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
-</dependencies>
+    </dependencies>
 
 
     <!-- =============================================================== -->
