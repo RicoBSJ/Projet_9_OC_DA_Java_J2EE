@@ -10,10 +10,9 @@ import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import org.junit.jupiter.api.Test;
 
-
 public class ComptabiliteManagerImplTest {
 
-    private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
+    private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
 
     @Test
