@@ -10,7 +10,7 @@
         <groupId>com.dummy.myerp</groupId>
         <artifactId>myerp</artifactId>
         <version>1.x.x-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!-- ===== Maven ===== -->
@@ -75,6 +75,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/build-helper-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.2.0</version>
         </dependency>
     </dependencies>
 
