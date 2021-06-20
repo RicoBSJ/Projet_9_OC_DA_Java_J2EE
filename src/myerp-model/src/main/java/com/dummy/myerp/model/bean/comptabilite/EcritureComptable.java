@@ -103,7 +103,7 @@ public class EcritureComptable {
                 vRetour = vRetour.add(vLigneEcritureComptable.getCredit());
             }
         }
-        return vRetour;
+        return vRetour.stripTrailingZeros();
     }
 
     /**
