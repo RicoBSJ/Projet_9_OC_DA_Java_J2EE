@@ -88,7 +88,7 @@ public class EcritureComptable {
                 vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
             }
         }
-        return vRetour;
+        return vRetour.stripTrailingZeros();
     }
 
     /**
