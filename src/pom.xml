@@ -47,7 +47,6 @@
         <maven.build.timestamp.format>dd/MM/yyyy</maven.build.timestamp.format>
         <buildTime>${maven.build.timestamp}</buildTime>
 
-        <sonar.projectKey>RicoBSJ_Projet_9_OC_DA_Java_J2EE</sonar.projectKey>
         <sonar.organization>ricobsj</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
@@ -298,6 +297,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.22.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>5.0</version>
+        </dependency>
     </dependencies>
 
 
@@ -437,6 +441,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.sonar</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>5.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
