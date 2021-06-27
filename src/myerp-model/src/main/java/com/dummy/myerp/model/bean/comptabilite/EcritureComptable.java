@@ -99,6 +99,9 @@ public class EcritureComptable {
     public BigDecimal getTotalCredit() {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
+            // Dans le code d'origine, on va chercher la ligne d'écriture comptable en débit
+            // or nous sommes dans la méthode du crédit, il convient donc de remplacer
+            // vLigneEcritureComptable.getDebit() par vLigneEcritureComptable.getCredit()
             if (vLigneEcritureComptable.getCredit() != null) {
                 vRetour = vRetour.add(vLigneEcritureComptable.getCredit());
             }
@@ -111,6 +114,12 @@ public class EcritureComptable {
      * @return boolean
      */
     public boolean isEquilibree() {
+        // Dans le code d'origine, nous avons ceci dans le corps de la méthode
+        // boolean vRetour = this.getTotalDebit().equals(getTotalCredit()); return vRetour;
+        // ce qui implique que le retour est un booleén, true ou false sans que
+        // l'on sache si le débit est supérieur ou inférieur au crédit
+        // En utilisant la méthode compareTo, on renvoie un int, +1 en faveur du crédit
+        // -1 en faveur du débit et 0 si les deux montants sont égaux
         boolean vRetour = this.getTotalDebit().compareTo(getTotalCredit()) == 0;
         return vRetour;
     }
