@@ -23,6 +23,9 @@ public class ComptabiliteManagerImplTest {
             vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
             vEcritureComptable.setDate(new Date());
             vEcritureComptable.setLibelle("Libelle");
+            /*Dans le code d'origine, la référence n'est pas setté
+            Rajout du setReference au format code du journal dans lequel figure l'écriture,
+            suivi de l'année et d'un numéro de séquence*/
             vEcritureComptable.setReference("AC-2019/00001");
             vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                     null, new BigDecimal(123),
