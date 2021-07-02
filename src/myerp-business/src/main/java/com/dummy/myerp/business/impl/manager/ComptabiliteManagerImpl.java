@@ -80,41 +80,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                     (table sequence_ecriture_comptable)
          */
         EcritureComptable vLastEcritureComptable;
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(pEcritureComptable.getDate());
 
-        String vRef = pEcritureComptable.getJournal().getCode() + "-" + calendar.get(Calendar.YEAR) + "/";
-
-        try {
-            vLastEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
-
-            if (calendar.get(Calendar.YEAR) == LocalDate.now().getYear()) {
-                String vRefCode = "";
-                for (int i = 0; i < vLastEcritureComptable.getReference().length(); i++) {
-                    if (vLastEcritureComptable.getReference().charAt(i) == CharUtils.toChar("/")) {
-                        for (int j = i + 1; j < vLastEcritureComptable.getReference().length(); j++) {
-                            vRefCode = vRefCode + vLastEcritureComptable.getReference().charAt(j);
-                        }
-                    }
-                }
-
-                int code = Integer.valueOf(vRefCode) + 1;
-                String codeStr = String.valueOf(code);
-
-                for (int i = codeStr.length(); i < 5; i++) {
-                    codeStr = "0" + codeStr;
-                }
-
-                vRef += codeStr;
-
-            } else {
-                vRef += "00001";
-            }
-
-        } catch (NullPointerException pE) {
-            vRef += "00001";
-        }
-        pEcritureComptable.setReference(vRef);
     }
 
     /**

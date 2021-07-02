@@ -39,4 +39,8 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
+
+    @Test
+    public void getTotalDebit() {
+    }
 }

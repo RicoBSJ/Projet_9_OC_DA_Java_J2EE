@@ -75,4 +75,11 @@ public class ComptabiliteManagerImplTest {
             manager.checkEcritureComptableUnit(vEcritureComptable);
         }
 
+    @Test
+    public void checkEcritureComptable() {
+    }
+
+    @Test
+    public void addReference() {
+    }
 }
