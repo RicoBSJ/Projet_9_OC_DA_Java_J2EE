@@ -81,5 +81,11 @@ public class ComptabiliteManagerImplTest {
 
     @Test
     public void addReference() {
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setReference("CC-2021/12345");
+        String reference = pEcritureComptable.getReference();
+        String anneeRef = reference.substring(3, 7);
+        String code = reference.substring(0,2);
+        int i = 0;
     }
 }

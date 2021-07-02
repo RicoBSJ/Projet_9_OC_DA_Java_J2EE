@@ -145,39 +145,21 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         et d'un numéro de séquence (propre à chaque journal) sur 5 chiffres incrémenté automatiquement à chaque écriture.
         Le formatage de la référence est : XX-AAAA/#####. Ex : Journal de banque (BQ), écriture au 31/12/2016 --> BQ-2016/00001
          */
-        String vCode = "";
+        String reference = pEcritureComptable.getReference();
+        String anneeRef = reference.substring(3, 7);
+        String code = reference.substring(0,2);
 
-        for (int i = 0; i < pEcritureComptable.getReference().length(); i++) {
-            if (pEcritureComptable.getReference().charAt(i) == CharUtils.toChar("-")) {
-                break;
-            }
 
-            vCode = vCode + pEcritureComptable.getReference().charAt(i);
-        }
-
-        if (!pEcritureComptable.getJournal().getCode().equals(vCode)) {
+        if (!pEcritureComptable.getJournal().getCode().equals(code)) {
             throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
         }
 
         // Vérification de l'année spécifiée dans la Référence et de l'année de la date de publication
-        String vYear = "";
-        for (int i = 0; i < pEcritureComptable.getReference().length(); i++) {
-            if (pEcritureComptable.getReference().charAt(i) == CharUtils.toChar("-")) {
-                for (int j = i + 1; j < pEcritureComptable.getReference().length(); j++) {
-                    if (pEcritureComptable.getReference().charAt(j) == CharUtils.toChar("/")) {
-                        break;
-                    }
 
-                    vYear = vYear + pEcritureComptable.getReference().charAt(j);
-                }
-
-                break;
-            }
-        }
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(pEcritureComptable.getDate());
 
-        if (Integer.valueOf(vYear) != calendar.get(Calendar.YEAR)) {
+        if (Integer.valueOf(anneeRef) != calendar.get(Calendar.YEAR)) {
             throw new FunctionalException("La date de la référence ne correspond pas à la date de publication");
         }
     }
