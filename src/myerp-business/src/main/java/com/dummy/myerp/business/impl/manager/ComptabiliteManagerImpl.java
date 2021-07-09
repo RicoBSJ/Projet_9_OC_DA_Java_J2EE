@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -80,45 +81,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
-        /* JAVADOC
-         * Ajoute une référence à l'écriture comptable.
-         *
-         * <strong>RG_Compta_5 : </strong>
-         * La référence d'une écriture comptable est composée du code du journal dans lequel figure l'écriture
-         * suivi de l'année et d'un numéro de séquence (propre à chaque journal) sur 5 chiffres incrémenté automatiquement
-         * à chaque écriture. Le formatage de la référence est : XX-AAAA/#####.
-         * <br>
-         * Ex : Journal de banque (BQ), écriture au 31/12/2016
-         * <pre>BQ-2016/00001</pre>AC-2019/00001
-         *
-         * <p><strong>Attention :</strong> l'écriture n'est pas enregistrée en persistance</p>
-         * @param pEcritureComptable L'écriture comptable concernée
-         */
-        EcritureComptable vLastEcritureComptable;
-        // Pourquoi cette écriture : Calendar calendar = new Calendar(); génère 8 override ?
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(pEcritureComptable.getDate());
-        // (code du journal)XX-(année)AAAA/(numéro de séquence)#####
-        String vRef = pEcritureComptable.getJournal().getCode() +"-"+ calendar.get(Calendar.YEAR) +"/";
-        /*
-        1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
-        (table sequence_ecriture_comptable)
-         */
-        vLastEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
-        /*
-        2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
-                1. Utiliser le numéro 1.
-            * Sinon :
-                1. Utiliser la dernière valeur + 1
-         */
-        if(calendar.get(Calendar.YEAR) != LocalDate.now().getYear()){
-            String vRefCode = "";
+        EcritureComptable vLastEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
+        String year = String.valueOf(pEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
+        String vRef = pEcritureComptable.getJournal().getCode() +"-"+ year +"/";
 
+        if(vLastEcritureComptable.getReference().contains(year)){
+            String sequence = vLastEcritureComptable.getReference().substring(8);
+            Integer sequencenb = Integer.parseInt(sequence)+1;
+            vRef += String.format("%05d", sequence);
+        // String.format("%05d" , sequence);
         } else {
             vRef += "00001";
         }
-
         pEcritureComptable.setReference(vRef);
+        getDaoProxy().getComptabiliteDao().insertEcritureComptable(pEcritureComptable);
     }
 
     /**

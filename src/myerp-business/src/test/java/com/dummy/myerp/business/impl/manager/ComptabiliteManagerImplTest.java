@@ -86,6 +86,7 @@ public class ComptabiliteManagerImplTest {
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
         String code = reference.substring(0,2);
+        String sequence = reference.substring(8);
         int i = 0;
     }
 }
