@@ -80,27 +80,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
-        /*
-        Attributs bean EcritureComptable
-            Id
-        private Integer id;
-            Journal Comptable
-        @NotNull private JournalComptable journal;
-            Reference
-        @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
-        private String reference;
-            Date
-        @NotNull private Date date;
-            Libelle
-        @NotNull
-        @Size(min = 1, max = 200)
-        private String libelle;
-            Liste des lignes d'écriture comptable
-        @Valid
-        @Size(min = 2)
-        private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
-         */
-        /*
+        /* JAVADOC
          * Ajoute une référence à l'écriture comptable.
          *
          * <strong>RG_Compta_5 : </strong>
@@ -125,6 +105,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         (table sequence_ecriture_comptable)
          */
         vLastEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
+        /*
+        2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
+                1. Utiliser le numéro 1.
+            * Sinon :
+                1. Utiliser la dernière valeur + 1
+         */
+        if(calendar.get(Calendar.YEAR) != LocalDate.now().getYear()){
+            String vRefCode = "";
+
+        } else {
+            vRef += "00001";
+        }
+
+        pEcritureComptable.setReference(vRef);
     }
 
     /**
