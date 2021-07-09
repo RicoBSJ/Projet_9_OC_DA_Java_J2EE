@@ -154,28 +154,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
-        /*
-        La référence d'une écriture comptable est composée du code du journal dans lequel figure l'écriture suivi de l'année
-        et d'un numéro de séquence (propre à chaque journal) sur 5 chiffres incrémenté automatiquement à chaque écriture.
-        Le formatage de la référence est : XX-AAAA/#####. Ex : Journal de banque (BQ), écriture au 31/12/2016 --> BQ-2016/00001
-         */
-        String reference = pEcritureComptable.getReference();
-        String anneeRef = reference.substring(3, 7);
-        String code = reference.substring(0,2);
-
-
-        if (!pEcritureComptable.getJournal().getCode().equals(code)) {
-            throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
-        }
-
-        // Vérification de l'année spécifiée dans la Référence et de l'année de la date de publication
-
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(pEcritureComptable.getDate());
-
-        if (Integer.valueOf(anneeRef) != calendar.get(Calendar.YEAR)) {
-            throw new FunctionalException("La date de la référence ne correspond pas à la date de publication");
-        }
     }
 
     /**
