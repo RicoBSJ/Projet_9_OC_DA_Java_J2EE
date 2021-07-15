@@ -88,7 +88,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         if(vLastEcritureComptable.getReference().contains(year)){
             String sequence = vLastEcritureComptable.getReference().substring(8);
             Integer sequencenb = Integer.parseInt(sequence)+1;
-            vRef += String.format("%05d", sequence);
+            vRef += String.format("%05d", sequencenb);
         // String.format("%05d" , sequence);
         } else {
             vRef += "00001";
@@ -154,6 +154,12 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+        Calendar calendar = new GregorianCalendar(2017, 0 , 25);
+        Date date = calendar.getTime();
+        String strDate = pEcritureComptable.getDate().toString();
+        String substring = strDate.substring(3);
+        String reference = pEcritureComptable.getReference();
+        String anneeRef = reference.substring(3, 7);
     }
 
     /**

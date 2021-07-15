@@ -1,7 +1,9 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -81,8 +83,11 @@ public class ComptabiliteManagerImplTest {
 
     @Test
     public void addReference() {
+        Calendar calendar = new GregorianCalendar(2017, 0 , 25);
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setReference("CC-2021/12345");
+        pEcritureComptable.setDate(calendar.getTime());
+        Date date = pEcritureComptable.getDate();
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
         String code = reference.substring(0,2);
