@@ -160,37 +160,16 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
         String numeroJournal = reference.substring(8, 13);
-        String code = "";
+        String code = reference.substring(0,2);
 
-        for (int i = 0; i < pEcritureComptable.getReference().length(); i++){
-            if(anneeEcriture.equals(anneeRef)){
-                break;
-            }
-            code = reference.substring(0,2);
+        if(!anneeEcriture.equals(anneeRef)){
+            throw new FunctionalException("L'année dans la référence ne correspond pas à la date de l'écriture");
         }
 
         // Vérification du Code du journal et de celui spécifié dans la référence
 
         if (!pEcritureComptable.getJournal().getCode().equals(code)) {
             throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
-        }
-
-        // Vérification de l'année spécifiée dans la Référence et de l'année de la date de publication
-        /*
-         * La référence d'une écriture comptable est composée du code du journal dans lequel figure l'écriture
-         * suivi de l'année et d'un numéro de séquence (propre à chaque journal) sur 5 chiffres incrémenté
-         * automatiquement à chaque écriture. Le formatage de la référence est : XX-AAAA/#####.
-         */
-        String year = "";
-        for (int i = 0; i < pEcritureComptable.getReference().length(); i++){
-            if(anneeEcriture.equals(anneeRef)){
-                for (int j = i + 1; j < pEcritureComptable.getReference().length(); j++){
-                    if(anneeEcriture.equals(numeroJournal)){
-                        break;
-                    }
-                    /*year = pEcritureComptable.getReference();*/
-                }
-            }
         }
     }
 
