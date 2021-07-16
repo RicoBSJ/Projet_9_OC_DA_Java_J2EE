@@ -87,7 +87,8 @@ public class ComptabiliteManagerImplTest {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setReference("CC-2021/12345");
         pEcritureComptable.setDate(calendar.getTime());
-        Date date = pEcritureComptable.getDate();
+        String year = String.valueOf(pEcritureComptable.getDate());
+        String dateEcriture = year.substring(3);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
         String code = reference.substring(0,2);

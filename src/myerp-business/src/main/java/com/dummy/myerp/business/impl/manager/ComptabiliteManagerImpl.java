@@ -154,12 +154,17 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
-        Calendar calendar = new GregorianCalendar(2017, 0 , 25);
-        Date date = calendar.getTime();
-        String strDate = pEcritureComptable.getDate().toString();
-        String substring = strDate.substring(3);
+        // Vérification du Code du journal et de celui spécifié dans la référence
+        String date = String.valueOf(pEcritureComptable.getDate());
+        String anneeEcriture = date.substring(3);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
+
+        for (int i = 0; i < pEcritureComptable.getReference().length(); i++){
+            if(anneeEcriture.equals(anneeRef)){
+                break;
+            }
+        }
     }
 
     /**
