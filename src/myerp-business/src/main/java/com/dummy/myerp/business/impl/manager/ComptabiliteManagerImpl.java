@@ -153,16 +153,43 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence
-        // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
-        // Vérification du Code du journal et de celui spécifié dans la référence
+        // Vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+
         String date = String.valueOf(pEcritureComptable.getDate());
         String anneeEcriture = date.substring(3);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
+        String numeroJournal = reference.substring(8, 13);
+        String code = "";
 
         for (int i = 0; i < pEcritureComptable.getReference().length(); i++){
             if(anneeEcriture.equals(anneeRef)){
                 break;
+            }
+            code = reference.substring(0,2);
+        }
+
+        // Vérification du Code du journal et de celui spécifié dans la référence
+
+        if (!pEcritureComptable.getJournal().getCode().equals(code)) {
+            throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
+        }
+
+        // Vérification de l'année spécifiée dans la Référence et de l'année de la date de publication
+        /*
+         * La référence d'une écriture comptable est composée du code du journal dans lequel figure l'écriture
+         * suivi de l'année et d'un numéro de séquence (propre à chaque journal) sur 5 chiffres incrémenté
+         * automatiquement à chaque écriture. Le formatage de la référence est : XX-AAAA/#####.
+         */
+        String year = "";
+        for (int i = 0; i < pEcritureComptable.getReference().length(); i++){
+            if(anneeEcriture.equals(anneeRef)){
+                for (int j = i + 1; j < pEcritureComptable.getReference().length(); j++){
+                    if(anneeEcriture.equals(numeroJournal)){
+                        break;
+                    }
+                    /*year = pEcritureComptable.getReference();*/
+                }
             }
         }
     }
