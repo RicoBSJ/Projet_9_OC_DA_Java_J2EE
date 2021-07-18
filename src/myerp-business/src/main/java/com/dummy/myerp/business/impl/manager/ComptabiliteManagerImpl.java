@@ -89,7 +89,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             String sequence = vLastEcritureComptable.getReference().substring(8);
             Integer sequencenb = Integer.parseInt(sequence)+1;
             vRef += String.format("%05d", sequencenb);
-        // String.format("%05d" , sequence);
         } else {
             vRef += "00001";
         }
