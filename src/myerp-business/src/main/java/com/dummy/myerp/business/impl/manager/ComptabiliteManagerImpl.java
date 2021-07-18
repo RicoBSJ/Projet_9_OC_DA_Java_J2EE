@@ -158,7 +158,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         String anneeEcriture = date.substring(3);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
-        String numeroJournal = reference.substring(8, 13);
         String code = reference.substring(0,2);
 
         if(!anneeEcriture.equals(anneeRef)){
