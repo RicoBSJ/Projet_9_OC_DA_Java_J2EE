@@ -56,7 +56,7 @@ public final class SpringRegistry {
      *
      * @return ApplicationContext
      */
-    public static final ApplicationContext init() {
+    public static ApplicationContext init() {
         // le fait d'appeler cette méthode, déclanche l'appel des initialisation static et donc le chargement du context
         return getInstance().contextAppli;
     }

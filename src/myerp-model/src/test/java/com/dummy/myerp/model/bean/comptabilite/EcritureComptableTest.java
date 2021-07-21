@@ -1,12 +1,16 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.util.Date;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class EcritureComptableTest {
+
+    private EcritureComptable ecritureComptable;
 
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ? null : new BigDecimal(pDebit);
@@ -40,7 +44,38 @@ public class EcritureComptableTest {
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
 
+    public void addReference() {
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        String currentYear = String.valueOf(pEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
+        String vRef = pEcritureComptable.getJournal().getCode() +"-"+ currentYear +"/";
+
+        if(pEcritureComptable.getReference().contains(currentYear)){
+            String sequence = pEcritureComptable.getReference().substring(8);
+            Integer sequencenb = Integer.parseInt(sequence)+1;
+            vRef += String.format("%05d", sequencenb);
+        } else {
+            vRef += "00001";
+        }
+        pEcritureComptable.setReference(vRef);
+    }
+
     @Test
     public void getTotalDebit() {
+        BigDecimal vRetour = BigDecimal.ZERO;
+        for (LigneEcritureComptable vLigneEcritureComptable : ecritureComptable.getListLigneEcriture()) {
+            if (vLigneEcritureComptable.getDebit() != null) {
+                vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
+            }
+        }
     }
 }
