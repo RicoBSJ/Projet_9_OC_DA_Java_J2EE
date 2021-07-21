@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="myerp-consumer" />
         <module name="myerp-technical" />
+        <module name="projet_B4_FR" />
         <module name="myerp-business" />
         <module name="myerp-model" />
       </profile>
@@ -18,6 +19,7 @@
       <module name="myerp-consumer" target="1.8" />
       <module name="myerp-model" target="1.8" />
       <module name="myerp-technical" target="1.8" />
+      <module name="projet_B4_FR" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
