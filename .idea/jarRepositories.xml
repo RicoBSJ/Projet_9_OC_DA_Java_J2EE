@@ -14,22 +14,7 @@
     <remote-repository>
       <option name="id" value="project.local" />
       <option name="name" value="project.local" />
-      <option name="url" value="file://$PROJECT_DIR$/src/../src/lib/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="project.local" />
-      <option name="name" value="project.local" />
-      <option name="url" value="file://$PROJECT_DIR$/src/myerp-consumer/../src/lib/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="project.local" />
-      <option name="name" value="project.local" />
-      <option name="url" value="file://$PROJECT_DIR$/src/myerp-model/../src/lib/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="project.local" />
-      <option name="name" value="project.local" />
-      <option name="url" value="file://$PROJECT_DIR$/src/myerp-technical/../src/lib/" />
+      <option name="url" value="file://$PROJECT_DIR$/src/myerp-business/../src/lib/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -54,7 +39,22 @@
     <remote-repository>
       <option name="id" value="project.local" />
       <option name="name" value="project.local" />
-      <option name="url" value="file://$PROJECT_DIR$/src/myerp-business/../src/lib/" />
+      <option name="url" value="file://$PROJECT_DIR$/src/../src/lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="project.local" />
+      <option name="name" value="project.local" />
+      <option name="url" value="file://$PROJECT_DIR$/src/myerp-model/../src/lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="project.local" />
+      <option name="name" value="project.local" />
+      <option name="url" value="file://$PROJECT_DIR$/src/myerp-technical/../src/lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="project.local" />
+      <option name="name" value="project.local" />
+      <option name="url" value="file://$PROJECT_DIR$/src/myerp-consumer/../src/lib/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="jboss.community" />

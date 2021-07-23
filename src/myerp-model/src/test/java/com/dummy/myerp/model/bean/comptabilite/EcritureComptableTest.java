@@ -46,11 +46,12 @@ public class EcritureComptableTest {
 
     @Test
     public void getTotalDebit() {
-        BigDecimal vRetour = BigDecimal.ZERO;
-        for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
-            if (vLigneEcritureComptable.getDebit() != null) {
-                vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
-            }
-        }
+        EcritureComptable ecritureComptable = new EcritureComptable();
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(2, null, "301"));
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
+        final BigDecimal totalDebit = ecritureComptable.getTotalDebit();
+        Assertions.assertThat(totalDebit).isEqualByComparingTo(BigDecimal.valueOf(341.00));
     }
 }
