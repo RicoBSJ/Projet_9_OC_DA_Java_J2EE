@@ -86,6 +86,7 @@
             </activation>
             <properties>
                 <maven.build.timestamp>DD/MM/YYYY</maven.build.timestamp>
+                <checkstyle.plugin.version>8.30</checkstyle.plugin.version>
             </properties>
         </profile>
 
@@ -392,13 +393,43 @@
                 </plugin>
 
                 <!-- ===== Plugin d'analyse de code Checkstyle ===== -->
+                <!--<plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.30</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>3.1.2</version>
                     <configuration>
-                        <configLocation>src/build/checkstyle.xml</configLocation>
+                        <consoleOutput>true</consoleOutput>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <suppressionsLocation>checkstyle_suppressions.xml</suppressionsLocation>
+                                <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.30</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
                 <!-- ===== Plugin de génération d'un site de documentation du projet ===== -->
@@ -579,7 +610,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
                 <configuration>
                     <configLocation>src/build/checkstyle.xml</configLocation>
                     <linkXRef>false</linkXRef>
