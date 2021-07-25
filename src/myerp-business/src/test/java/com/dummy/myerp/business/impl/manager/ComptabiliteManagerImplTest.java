@@ -38,56 +38,56 @@ public class ComptabiliteManagerImplTest {
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitViolation() throws FunctionalException {
-            EcritureComptable pEcritureComptable;
-            pEcritureComptable = new EcritureComptable();
-            manager.checkEcritureComptableUnit(pEcritureComptable);
-        }
+        EcritureComptable pEcritureComptable;
+        pEcritureComptable = new EcritureComptable();
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+    }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2() throws FunctionalException {
-            EcritureComptable pEcritureComptable;
-            pEcritureComptable = new EcritureComptable();
-            pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-            pEcritureComptable.setDate(new Date());
-            pEcritureComptable.setLibelle("Libelle");
-            pEcritureComptable.setReference("AC-2019/00001");
-            pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                    null, new BigDecimal(123),
-                    null));
-            pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                    null, null,
-                    new BigDecimal(1234)));
-            manager.checkEcritureComptableUnit(pEcritureComptable);
-        }
+        EcritureComptable pEcritureComptable;
+        pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(1234)));
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+    }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG3() throws FunctionalException {
-            EcritureComptable pEcritureComptable;
-            pEcritureComptable = new EcritureComptable();
-            pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-            pEcritureComptable.setDate(new Date());
-            pEcritureComptable.setLibelle("Libelle");
-            pEcritureComptable.setReference("AC-2019/00001");
-            pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                    null, new BigDecimal(123),
-                    null));
-            pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                    null, new BigDecimal(123),
-                    null));
-            manager.checkEcritureComptableUnit(pEcritureComptable);
-        }
+        EcritureComptable pEcritureComptable;
+        pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+    }
 
     protected void checkEcritureComptableContext() throws Exception {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable pEcritureComptable = new EcritureComptable();
         if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
-                EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(pEcritureComptable.getReference());
-                if (pEcritureComptable.getId() == null
-                        || !pEcritureComptable.getId().equals(vECRef.getId())) {
-                    throw new Exception("Une autre écriture comptable existe déjà avec la même référence.");
-                }
+            EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(pEcritureComptable.getReference());
+            if (pEcritureComptable.getId() == null
+                    || !pEcritureComptable.getId().equals(vECRef.getId())) {
+                throw new Exception("Une autre écriture comptable existe déjà avec la même référence.");
             }
         }
+    }
 
     @Test
     public void checkEcritureComptable() throws Exception {
@@ -109,11 +109,11 @@ public class ComptabiliteManagerImplTest {
                 null, null,
                 new BigDecimal(123)));
         String currentYear = String.valueOf(pEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
-        String vRef = pEcritureComptable.getJournal().getCode() +"-"+ currentYear +"/";
+        String vRef = pEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
 
-        if(pEcritureComptable.getReference().contains(currentYear)){
+        if (pEcritureComptable.getReference().contains(currentYear)) {
             String sequence = pEcritureComptable.getReference().substring(8);
-            Integer sequencenb = Integer.parseInt(sequence)+1;
+            Integer sequencenb = Integer.parseInt(sequence) + 1;
             vRef += String.format("%05d", sequencenb);
         } else {
             vRef += "00001";
