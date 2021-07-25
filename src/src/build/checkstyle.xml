@@ -499,14 +499,12 @@
 
 
         <!-- N'est plus disponible dans Checkstyle 6.2 -->
-        <!--
         <module name="RedundantThrows">
           <metadata name="net.sf.eclipsecs.core.comment" value="NO_THROWS_INUTIL"/>
           <property name="id" value="NO_THROWS_INUTIL"/>
           <property name="severity" value="error"/>
           <property name="suppressLoadErrors" value="true"/>
         </module>
-        -->
 
 
         <module name="SimplifyBooleanExpression">

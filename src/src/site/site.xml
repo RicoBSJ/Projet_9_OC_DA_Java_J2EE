@@ -43,9 +43,9 @@
     <menu ref="reports" inherit="top"/>
     <menu ref="modules" inherit="top"/>
 
-    <links>
+    <!--<links>
     	<item name="MyERP" href="http://www.dummy.com/myerp"/>
-    </links>
+    </links>-->
 
     <footer>All rights reserved to ${project.organization.name}</footer>
 

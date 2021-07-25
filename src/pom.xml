@@ -276,11 +276,11 @@
             <version>3.1.2</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-project-info-reports-plugin</artifactId>
             <version>3.1.2</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -402,7 +402,7 @@
                 </plugin>
 
                 <!-- ===== Plugin de génération d'un site de documentation du projet ===== -->
-                <plugin>
+                <!--<plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.6</version>
@@ -411,14 +411,14 @@
                         <locales>fr</locales>
                         <relativizeDecorationLinks>false</relativizeDecorationLinks>
                     </configuration>
-                </plugin>
+                </plugin>-->
 
                 <!-- ===== Project info ===== -->
-                <plugin>
+                <!--<plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>3.1.2</version>
-                </plugin>
+                </plugin>-->
 
                 <!-- ===== Javadoc ===== -->
                 <plugin>
@@ -463,11 +463,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
@@ -483,7 +478,7 @@
         <outputDirectory>${project.build.directory}/site</outputDirectory>
         <plugins>
             <!-- ===== Génération du site de documentation de base avec les "rapports génériques" ===== -->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.1.2</version>
@@ -507,7 +502,7 @@
                         </reports>
                     </reportSet>
                 </reportSets>
-            </plugin>
+            </plugin>-->
 
             <!-- ===== Création du rapport des tests unitaires (JUnit) ===== -->
             <plugin>
