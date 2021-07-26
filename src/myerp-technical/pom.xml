@@ -17,21 +17,6 @@
     <!-- ===== Maven ===== -->
     <artifactId>myerp-technical</artifactId>
 
-    <!-- ===== General information ===== -->
-    <name>${project.artifactId}</name>
-
-
-    <!-- =============================================================== -->
-    <!-- Distrubution management -->
-    <!-- =============================================================== -->
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <name>site-doc</name>
-            <url>file://${basedir}/../target/site-doc/${project.artifactId}/</url>
-        </site>
-    </distributionManagement>
-
 
     <!-- =============================================================== -->
     <!-- Properties -->

@@ -19,24 +19,6 @@
     </description>
     <url>http://www.dummy.com/projects/myerp</url>
 
-    <!-- ===== Organization ===== -->
-    <!--<organization>
-        <name>Dummy</name>
-        <url>http://www.dummy.com</url>
-    </organization>-->
-
-
-    <!-- =============================================================== -->
-    <!-- Distrubution management -->
-    <!-- =============================================================== -->
-    <!--<distributionManagement>
-        <site>
-            <id>site</id>
-            <name>site-doc</name>
-            <url>file://${project.build.directory}/site-doc/</url>
-        </site>
-    </distributionManagement>-->
-
 
     <!-- =============================================================== -->
     <!-- Properties -->
@@ -405,12 +387,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/dto/**/*</exclude>
-                        <exclude>**/model/**/*</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>
