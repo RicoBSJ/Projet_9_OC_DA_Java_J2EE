@@ -14,10 +14,10 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="myerp" target="1.5" />
-      <module name="myerp-business" target="8" />
-      <module name="myerp-consumer" target="8" />
-      <module name="myerp-model" target="8" />
-      <module name="myerp-technical" target="8" />
+      <module name="myerp-business" target="11" />
+      <module name="myerp-consumer" target="11" />
+      <module name="myerp-model" target="11" />
+      <module name="myerp-technical" target="11" />
       <module name="projet_B4_FR" target="1.5" />
     </bytecodeTargetLevel>
   </component>
