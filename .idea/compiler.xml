@@ -19,6 +19,7 @@
       <module name="myerp-model" target="11" />
       <module name="myerp-technical" target="11" />
       <module name="projet_B4_FR" target="1.5" />
+      <module name="ReportAggregator" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
