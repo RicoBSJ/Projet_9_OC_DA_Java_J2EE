@@ -16,7 +16,7 @@ public class ComptabiliteManagerImplTest {
     private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
     @Test
-    public void checkEcritureComptableUnit() {
+    public void checkEcritureComptableUnitTest() {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
@@ -34,14 +34,15 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitViolation() throws FunctionalException {
+    public void checkEcritureComptableUnitViolationTest() throws FunctionalException {
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitRG2() throws FunctionalException {
+    public void checkEcritureComptableUnitRG2Test() throws FunctionalException {
+        // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -58,7 +59,8 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitRG3() throws FunctionalException {
+    public void checkEcritureComptableUnitRG3Test() throws FunctionalException {
+        // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -74,25 +76,30 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableContext() throws Exception {
+    /*@Test
+    public void checkEcritureComptableContextTest() throws Exception {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable firstEcritureComptable = new EcritureComptable();
         firstEcritureComptable.setReference("AC-2019/00001");
         EcritureComptable secondEcritureComptable = new EcritureComptable();
         secondEcritureComptable.setReference("AC-2019/00002");
-        if (firstEcritureComptable.getReference().equals(secondEcritureComptable.getReference())){
-            throw new FunctionalException("La référence de l'écriture comptable n'est pas unique");
-        } else {
-            String s = "La référence de l'écriture comptable est unique";
-        }
-    }
+    }*/
 
-    @Test
-    public void checkEcritureComptable() throws Exception {
-        this.checkEcritureComptableUnit();
-        this.checkEcritureComptableContext();
-    }
+    /*@Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitTest() throws Exception {
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptable(pEcritureComptable);
+    }*/
 
     @Test
     public void addReference() {

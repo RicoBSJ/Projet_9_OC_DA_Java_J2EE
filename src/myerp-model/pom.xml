@@ -35,7 +35,6 @@
             <artifactId>myerp-technical</artifactId>
         </dependency>
 
-
         <!-- ========== Test Dependencies ========== -->
         <!-- ===== Tests ===== -->
         <dependency>

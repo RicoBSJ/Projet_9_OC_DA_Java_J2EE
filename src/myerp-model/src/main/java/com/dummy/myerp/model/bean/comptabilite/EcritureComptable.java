@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -122,26 +123,26 @@ public class EcritureComptable {
         En utilisant la méthode compareTo, on renvoie un int, +1 en faveur du crédit
         -1 en faveur du débit et 0 si les deux montants sont égaux
         */
-        boolean vRetour = this.getTotalDebit().compareTo(getTotalCredit()) == 0;
-        return vRetour;
+        return this.getTotalDebit().compareTo(getTotalCredit()) == 0;
     }
 
     // ==================== Méthodes ====================
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
         final String vSEP = ", ";
-        vStB.append("{")
-            .append("id=").append(id)
-            .append(vSEP).append("journal=").append(journal)
-            .append(vSEP).append("reference='").append(reference).append('\'')
-            .append(vSEP).append("date=").append(date)
-            .append(vSEP).append("libelle='").append(libelle).append('\'')
-            .append(vSEP).append("totalDebit=").append(this.getTotalDebit().toPlainString())
-            .append(vSEP).append("totalCredit=").append(this.getTotalCredit().toPlainString())
-            .append(vSEP).append("listLigneEcriture=[\n")
-            .append(StringUtils.join(listLigneEcriture, "\n")).append("\n]")
-            .append("}");
-        return vStB.toString();
+        String vStB;
+        vStB = this.getClass().getSimpleName() + "{" +
+                "id=" + id +
+                vSEP + "journal=" + journal +
+                vSEP + "reference='" + reference + '\'' +
+                vSEP + "date=" + date +
+                vSEP + "libelle='" + libelle + '\'' +
+                vSEP + "totalDebit=" + this.getTotalDebit().toPlainString() +
+                vSEP + "totalCredit=" + this.getTotalCredit().toPlainString() +
+                vSEP + "listLigneEcriture=[\n" +
+                StringUtils.join(listLigneEcriture, "\n") + "\n]" +
+                "}";
+        return vStB;
     }
 }
