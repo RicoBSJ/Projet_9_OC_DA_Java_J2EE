@@ -9,10 +9,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-
-import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
 
 public class ComptabiliteManagerImplTest {
 
@@ -77,15 +74,17 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    protected void checkEcritureComptableContext() throws Exception {
+    @Test
+    public void checkEcritureComptableContext() throws Exception {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
-        EcritureComptable pEcritureComptable = new EcritureComptable();
-        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
-            EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(pEcritureComptable.getReference());
-            if (pEcritureComptable.getId() == null
-                    || !pEcritureComptable.getId().equals(vECRef.getId())) {
-                throw new Exception("Une autre écriture comptable existe déjà avec la même référence.");
-            }
+        EcritureComptable firstEcritureComptable = new EcritureComptable();
+        firstEcritureComptable.setReference("AC-2019/00001");
+        EcritureComptable secondEcritureComptable = new EcritureComptable();
+        secondEcritureComptable.setReference("AC-2019/00002");
+        if (firstEcritureComptable.getReference().equals(secondEcritureComptable.getReference())){
+            throw new FunctionalException("La référence de l'écriture comptable n'est pas unique");
+        } else {
+            String s = "La référence de l'écriture comptable est unique";
         }
     }
 
