@@ -26,7 +26,7 @@ public class CompteComptableTest {
         list.add(compteComptable2);
         list.add(compteComptable3);
         list.add(compteComptable4);
-        CompteComptable.getByNumero(list, 1);
+        CompteComptable.getByNumero(list, 401);
     }
 
     /*
