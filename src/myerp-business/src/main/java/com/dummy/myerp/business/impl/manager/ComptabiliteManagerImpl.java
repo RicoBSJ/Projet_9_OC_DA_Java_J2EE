@@ -6,6 +6,7 @@ import java.util.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.TransactionStatus;
@@ -38,12 +39,13 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     // ==================== Getters/Setters ====================
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public List<CompteComptable> getListCompteComptable() {
         return getDaoProxy().getComptabiliteDao().getListCompteComptable();
     }
 
-
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public List<JournalComptable> getListJournalComptable() {
         return getDaoProxy().getComptabiliteDao().getListJournalComptable();
     }
@@ -52,6 +54,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * {@inheritDoc}
      */
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public List<EcritureComptable> getListEcritureComptable() {
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
@@ -137,7 +140,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             }
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
-        //      avec un montant au débit et un montant au crédit ce n'est pas valable
+        // avec un montant au débit et un montant au crédit ce n'est pas valable
         if (pEcritureComptable.getListLigneEcriture().size() < 2
                 || vNbrCredit < 1
                 || vNbrDebit < 1) {

@@ -10,9 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 import org.apache.commons.lang3.StringUtils;
-
 
 /**
  * Bean représentant une Écriture Comptable
@@ -128,7 +126,6 @@ public class EcritureComptable {
 
     // ==================== Méthodes ====================
     @Override
-    @ExcludeFromJacocoGeneratedReport
     public String toString() {
         final String vSEP = ", ";
         String vStB;

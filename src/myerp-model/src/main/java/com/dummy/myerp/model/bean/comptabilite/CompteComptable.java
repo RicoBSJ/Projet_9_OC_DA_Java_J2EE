@@ -1,11 +1,9 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 
 /**
  * Bean représentant un Compte Comptable
@@ -68,13 +66,11 @@ public class CompteComptable {
     // ==================== Méthodes ====================
     @Override
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
         final String vSEP = ", ";
-        vStB.append("{")
-            .append("numero=").append(numero)
-            .append(vSEP).append("libelle='").append(libelle).append('\'')
-            .append("}");
-        return vStB.toString();
+        return this.getClass().getSimpleName() + "{" +
+                "numero=" + numero +
+                vSEP + "libelle='" + libelle + '\'' +
+                "}";
     }
 
 
