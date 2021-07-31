@@ -1,5 +1,7 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
+
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
@@ -49,15 +51,19 @@ public class CompteComptable {
 
 
     // ==================== Getters/Setters ====================
+    @ExcludeFromJacocoGeneratedReport
     public Integer getNumero() {
         return numero;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setNumero(Integer pNumero) {
         numero = pNumero;
     }
+    @ExcludeFromJacocoGeneratedReport
     public String getLibelle() {
         return libelle;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setLibelle(String pLibelle) {
         libelle = pLibelle;
     }
@@ -65,6 +71,7 @@ public class CompteComptable {
 
     // ==================== Méthodes ====================
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public String toString() {
         final String vSEP = ", ";
         return this.getClass().getSimpleName() + "{" +

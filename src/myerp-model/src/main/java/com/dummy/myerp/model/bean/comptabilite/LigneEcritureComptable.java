@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dummy.myerp.model.validation.constraint.MontantComptable;
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 
 /**
  * Bean représentant une Ligne d'écriture comptable.
@@ -54,27 +55,33 @@ public class LigneEcritureComptable {
 
 
     // ==================== Getters/Setters ====================
+    @ExcludeFromJacocoGeneratedReport
     public CompteComptable getCompteComptable() {
         return compteComptable;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setCompteComptable(CompteComptable pCompteComptable) {
         compteComptable = pCompteComptable;
     }
+    @ExcludeFromJacocoGeneratedReport
     public String getLibelle() {
         return libelle;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setLibelle(String pLibelle) {
         libelle = pLibelle;
     }
     public BigDecimal getDebit() {
         return debit;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setDebit(BigDecimal pDebit) {
         debit = pDebit;
     }
     public BigDecimal getCredit() {
         return credit;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setCredit(BigDecimal pCredit) {
         credit = pCredit;
     }
@@ -82,6 +89,7 @@ public class LigneEcritureComptable {
 
     // ==================== Méthodes ====================
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public String toString() {
         final String vSEP = ", ";
         return this.getClass().getSimpleName() + "{" +

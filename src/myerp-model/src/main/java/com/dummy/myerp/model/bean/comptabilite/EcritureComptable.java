@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -40,9 +41,11 @@ public class EcritureComptable {
 
 
     // ==================== Getters/Setters ====================
+    @ExcludeFromJacocoGeneratedReport
     public Integer getId() {
         return id;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setId(Integer pId) {
         id = pId;
     }
@@ -64,6 +67,7 @@ public class EcritureComptable {
     public void setDate(Date pDate) {
         date = pDate;
     }
+    @ExcludeFromJacocoGeneratedReport
     public String getLibelle() {
         return libelle;
     }
@@ -126,6 +130,7 @@ public class EcritureComptable {
 
     // ==================== Méthodes ====================
     @Override
+    @ExcludeFromJacocoGeneratedReport
     public String toString() {
         final String vSEP = ", ";
         String vStB;
