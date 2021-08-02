@@ -1,5 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,6 +27,6 @@ public class JournalComptableTest {
         list.add(journalComptable2);
         list.add(journalComptable3);
         list.add(journalComptable4);
-        JournalComptable.getByCode(list, "AC");
+        Assertions.assertThat(JournalComptable.getByCode(list, "OC")).isNull();
     }
 }

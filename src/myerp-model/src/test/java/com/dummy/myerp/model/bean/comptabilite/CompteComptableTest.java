@@ -1,5 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,19 +27,6 @@ public class CompteComptableTest {
         list.add(compteComptable2);
         list.add(compteComptable3);
         list.add(compteComptable4);
-        CompteComptable.getByNumero(list, 401);
+        Assertions.assertThat(CompteComptable.getByNumero(list, 4455)).isNull();
     }
-
-    /*
-    public static CompteComptable getByNumero(List<? extends CompteComptable> pList, Integer pNumero) {
-        CompteComptable vRetour = null;
-        for (CompteComptable vBean : pList) {
-            if (vBean != null && Objects.equals(vBean.getNumero(), pNumero)) {
-                vRetour = vBean;
-                break;
-            }
-        }
-        return vRetour;
-    }
-     */
 }
