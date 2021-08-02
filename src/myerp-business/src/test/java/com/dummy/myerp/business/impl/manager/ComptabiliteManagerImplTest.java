@@ -70,7 +70,7 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test(expected = FunctionalException.class)
+    @Test
     public void checkEcritureComptableContextTest() {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable pEcritureComptable1 = new EcritureComptable();
