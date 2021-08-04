@@ -84,44 +84,13 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable3.setReference("AC-2019/00001");
         EcritureComptable pEcritureComptable4 = new EcritureComptable();
         pEcritureComptable4.setReference("BQ-2019/00001");
-        List<EcritureComptable> list = new ArrayList<>();
-        list.add(pEcritureComptable1);
-        list.add(pEcritureComptable2);
-        list.add(pEcritureComptable3);
-        list.add(pEcritureComptable4);
-        String reference = list.stream().findAny().get().getReference();
-        //manager.checkEcritureComptableContext(reference.);
-        //Assertions.assertThat(reference.getClass().getName().repeat(2);
-        // Assertions.assertThat(CompteComptable.getByNumero(list, 4455)).isNull();
-        //assertThat(userList).contains(user, atIndex(0)).containsOnlyOnce(user, user2, user3);
-        /*EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(
-                list.getReference());
-        Assertions.assertThat(totalDebit).isEqualByComparingTo(BigDecimal.valueOf(341.00));*/
+        ArrayList<String> list = new ArrayList<>();
+        list.add(pEcritureComptable1.getReference());
+        list.add(pEcritureComptable2.getReference());
+        list.add(pEcritureComptable3.getReference());
+        list.add(pEcritureComptable4.getReference());
+        Assertions.assertThat(Collections.frequency(list, "AC-2019/00001")).isGreaterThanOrEqualTo(2);
     }
-
-    /*
-    protected void checkEcritureComptableContext(EcritureComptable pEcritureComptable) throws
-            FunctionalException {
-        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
-        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
-            try {
-                // Recherche d'une écriture ayant la même référence
-                EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(
-                        pEcritureComptable.getReference());
-
-                // Si l'écriture à vérifier est une nouvelle écriture (id == null),
-                // ou si elle ne correspond pas à l'écriture trouvée (id != idECRef),
-                // c'est qu'il y a déjà une autre écriture avec la même référence
-                if (pEcritureComptable.getId() == null
-                        || !pEcritureComptable.getId().equals(vECRef.getId())) {
-                    throw new FunctionalException("Une autre écriture comptable existe déjà avec la même référence.");
-                }
-            } catch (NotFoundException vEx) {
-                // Dans ce cas, c'est bon, ça veut dire qu'on n'a aucune autre écriture avec la même référence.
-            }
-        }
-    }
-     */
 
     @Test
     public void addReference() {
