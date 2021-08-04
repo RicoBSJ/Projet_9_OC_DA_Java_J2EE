@@ -10,8 +10,6 @@ import org.junit.Test;
 
 public class EcritureComptableTest {
 
-    private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
-
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ? null : new BigDecimal(pDebit);
         BigDecimal vCredit = pCredit == null ? null : new BigDecimal(pCredit);
@@ -23,7 +21,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void isEquilibree() {
+    public void isEquilibreeTest() {
         EcritureComptable vEcriture;
         vEcriture = new EcritureComptable();
 
@@ -44,7 +42,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void getTotalDebit() {
+    public void getTotalDebitTest() {
         EcritureComptable ecritureComptable = new EcritureComptable();
         ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
         ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));

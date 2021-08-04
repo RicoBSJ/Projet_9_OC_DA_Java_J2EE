@@ -89,11 +89,11 @@ public class ComptabiliteManagerImplTest {
         list.add(pEcritureComptable2.getReference());
         list.add(pEcritureComptable3.getReference());
         list.add(pEcritureComptable4.getReference());
-        Assertions.assertThat(Collections.frequency(list, "AC-2019/00001")).isGreaterThanOrEqualTo(2);
+        Assertions.assertThat(Collections.frequency(list, "AC-2019/00001")).isGreaterThan(1);
     }
 
     @Test
-    public void addReference() {
+    public void addReferenceTest() {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
