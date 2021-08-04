@@ -1,5 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import com.dummy.myerp.technical.annotations.ExcludeConstructorFromJacocoGeneratedReport;
 import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class JournalComptable {
      * @param pCode the p code
      * @param pLibelle the p libelle
      */
+    @ExcludeConstructorFromJacocoGeneratedReport
     public JournalComptable(String pCode, String pLibelle) {
         code = pCode;
         libelle = pLibelle;

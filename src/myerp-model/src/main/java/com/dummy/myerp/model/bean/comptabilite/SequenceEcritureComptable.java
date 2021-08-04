@@ -1,10 +1,13 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import com.dummy.myerp.technical.annotations.ExcludeClassFromJacocoGeneratedReport;
+import com.dummy.myerp.technical.annotations.ExcludeConstructorFromJacocoGeneratedReport;
 import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 
 /**
  * Bean représentant une séquence pour les références d'écriture comptable
  */
+@ExcludeClassFromJacocoGeneratedReport
 public class SequenceEcritureComptable {
 
     // ==================== Attributs ====================
@@ -17,6 +20,7 @@ public class SequenceEcritureComptable {
     /**
      * Constructeur
      */
+    @ExcludeConstructorFromJacocoGeneratedReport
     public SequenceEcritureComptable() {
     }
 
@@ -26,6 +30,7 @@ public class SequenceEcritureComptable {
      * @param pAnnee -
      * @param pDerniereValeur -
      */
+    @ExcludeConstructorFromJacocoGeneratedReport
     public SequenceEcritureComptable(Integer pAnnee, Integer pDerniereValeur) {
         annee = pAnnee;
         derniereValeur = pDerniereValeur;

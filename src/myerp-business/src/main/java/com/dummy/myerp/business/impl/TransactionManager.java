@@ -1,5 +1,6 @@
 package com.dummy.myerp.business.impl;
 
+import com.dummy.myerp.technical.annotations.ExcludeClassFromJacocoGeneratedReport;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -8,6 +9,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 /**
  * <p>Classe de gestion des Transactions de persistance</p>
  */
+@ExcludeClassFromJacocoGeneratedReport
 public class TransactionManager {
 
     // ==================== Attributs Static ====================

@@ -49,21 +49,27 @@ public class EcritureComptable {
     public void setId(Integer pId) {
         id = pId;
     }
+    @ExcludeFromJacocoGeneratedReport
     public JournalComptable getJournal() {
         return journal;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setJournal(JournalComptable pJournal) {
         journal = pJournal;
     }
+    @ExcludeFromJacocoGeneratedReport
     public String getReference() {
         return reference;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setReference(String pReference) {
         reference = pReference;
     }
+    @ExcludeFromJacocoGeneratedReport
     public Date getDate() {
         return date;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setDate(Date pDate) {
         date = pDate;
     }
@@ -71,9 +77,11 @@ public class EcritureComptable {
     public String getLibelle() {
         return libelle;
     }
+    @ExcludeFromJacocoGeneratedReport
     public void setLibelle(String pLibelle) {
         libelle = pLibelle;
     }
+    @ExcludeFromJacocoGeneratedReport
     public List<LigneEcritureComptable> getListLigneEcriture() {
         return listLigneEcriture;
     }

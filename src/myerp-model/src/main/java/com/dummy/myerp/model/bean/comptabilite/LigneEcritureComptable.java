@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dummy.myerp.model.validation.constraint.MontantComptable;
+import com.dummy.myerp.technical.annotations.ExcludeConstructorFromJacocoGeneratedReport;
 import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 
 /**
@@ -34,6 +35,7 @@ public class LigneEcritureComptable {
     /**
      * Instantiates a new Ligne ecriture comptable.
      */
+    @ExcludeConstructorFromJacocoGeneratedReport
     public LigneEcritureComptable() {
     }
 
