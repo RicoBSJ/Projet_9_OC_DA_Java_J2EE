@@ -3,12 +3,15 @@ package com.dummy.myerp.business.impl.manager;
 import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Test;
@@ -86,8 +89,12 @@ public class ComptabiliteManagerImplTest {
         list.add(pEcritureComptable2);
         list.add(pEcritureComptable3);
         list.add(pEcritureComptable4);
-        /*for (EcritureComptable ecritureComptable : list)
-        EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(
+        String reference = list.stream().findAny().get().getReference();
+        //manager.checkEcritureComptableContext(reference.);
+        //Assertions.assertThat(reference.getClass().getName().repeat(2);
+        // Assertions.assertThat(CompteComptable.getByNumero(list, 4455)).isNull();
+        //assertThat(userList).contains(user, atIndex(0)).containsOnlyOnce(user, user2, user3);
+        /*EcritureComptable vECRef = getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(
                 list.getReference());
         Assertions.assertThat(totalDebit).isEqualByComparingTo(BigDecimal.valueOf(341.00));*/
     }
