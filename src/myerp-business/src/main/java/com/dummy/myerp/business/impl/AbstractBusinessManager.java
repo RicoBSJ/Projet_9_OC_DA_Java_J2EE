@@ -7,6 +7,8 @@ import javax.validation.ValidatorFactory;
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
+import com.dummy.myerp.technical.annotations.ExcludeConstructorFromJacocoGeneratedReport;
+import com.dummy.myerp.technical.annotations.ExcludeFromJacocoGeneratedReport;
 
 
 /**
@@ -31,6 +33,7 @@ public abstract class AbstractBusinessManager {
      * @param pDaoProxy           -
      * @param pTransactionManager -
      */
+    @ExcludeFromJacocoGeneratedReport
     public static void configure(BusinessProxy pBusinessProxy,
                                  DaoProxy pDaoProxy,
                                  TransactionManager pTransactionManager) {
@@ -47,6 +50,7 @@ public abstract class AbstractBusinessManager {
      *
      * @return {@link BusinessProxy}
      */
+    @ExcludeFromJacocoGeneratedReport
     protected BusinessProxy getBusinessProxy() {
         return businessProxy;
     }
@@ -57,6 +61,7 @@ public abstract class AbstractBusinessManager {
      *
      * @return {@link DaoProxy}
      */
+    @ExcludeFromJacocoGeneratedReport
     protected DaoProxy getDaoProxy() {
         return daoProxy;
     }
@@ -67,6 +72,7 @@ public abstract class AbstractBusinessManager {
      *
      * @return TransactionManager
      */
+    @ExcludeFromJacocoGeneratedReport
     protected TransactionManager getTransactionManager() {
         return transactionManager;
     }
@@ -80,7 +86,6 @@ public abstract class AbstractBusinessManager {
     protected Validator getConstraintValidator() {
         Configuration<?> vConfiguration = Validation.byDefaultProvider().configure();
         ValidatorFactory vFactory = vConfiguration.buildValidatorFactory();
-        Validator vValidator = vFactory.getValidator();
-        return vValidator;
+        return vFactory.getValidator();
     }
 }

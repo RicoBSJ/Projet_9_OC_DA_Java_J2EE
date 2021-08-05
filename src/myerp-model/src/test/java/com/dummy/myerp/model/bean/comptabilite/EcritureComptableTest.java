@@ -21,7 +21,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void isEquilibreeTest() {
+    public void isEquilibree() {
         EcritureComptable vEcriture;
         vEcriture = new EcritureComptable();
 
@@ -42,7 +42,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void getTotalDebitTest() {
+    public void getTotalDebit() {
         EcritureComptable ecritureComptable = new EcritureComptable();
         ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
         ecritureComptable.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));

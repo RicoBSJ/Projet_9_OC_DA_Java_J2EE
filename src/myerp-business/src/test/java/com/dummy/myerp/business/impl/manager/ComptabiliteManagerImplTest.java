@@ -49,7 +49,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void checkEcritureComptableUnitRG2Test() {
+    public void checkEcritureComptableUnitRG2() {
         // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
@@ -74,7 +74,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void checkEcritureComptableContextTest() {
+    public void checkEcritureComptableContext() {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable pEcritureComptable1 = new EcritureComptable();
         pEcritureComptable1.setReference("AC-2019/00001");
@@ -93,7 +93,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void addReferenceTest() {
+    public void addReference() {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
