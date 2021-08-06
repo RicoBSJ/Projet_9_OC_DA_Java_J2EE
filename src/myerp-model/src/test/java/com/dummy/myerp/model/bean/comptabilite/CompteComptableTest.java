@@ -1,5 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 public class CompteComptableTest {
 
     @Test
-    public void getByNumeroTest() {
+    public void getByNumero() {
 
         CompteComptable compteComptable1 = new CompteComptable();
         compteComptable1.setNumero(401);
@@ -18,12 +19,11 @@ public class CompteComptableTest {
         compteComptable3.setNumero(401);
         CompteComptable compteComptable4 = new CompteComptable();
         compteComptable4.setNumero(4456);
-        List<CompteComptable> list = new ArrayList<>();
-        list.add(compteComptable1);
-        list.add(compteComptable2);
-        list.add(compteComptable3);
-        list.add(compteComptable4);
-        CompteComptable.getByNumero(list, 4455);
-        /*Arrays.stream(list.toArray()).sorted().collect(Collectors.toList()).containsAll().getByNumero(list, 4455);*/
+        List<Integer> list = new ArrayList<>();
+        list.add(compteComptable1.getNumero());
+        list.add(compteComptable2.getNumero());
+        list.add(compteComptable3.getNumero());
+        list.add(compteComptable4.getNumero());
+        Assertions.assertThat(list.contains(4454)).isFalse();
     }
 }

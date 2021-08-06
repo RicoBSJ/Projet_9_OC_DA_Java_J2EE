@@ -1,8 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.assertj.core.api.Assertions;
