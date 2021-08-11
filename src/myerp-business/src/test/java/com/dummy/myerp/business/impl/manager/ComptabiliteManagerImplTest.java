@@ -36,6 +36,12 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableTest() throws Exception {
+        this.checkEcritureComptableUnitTest();
+        this.checkEcritureComptableContext();
+    }
+
+    @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitViolationTest() throws Exception {
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();

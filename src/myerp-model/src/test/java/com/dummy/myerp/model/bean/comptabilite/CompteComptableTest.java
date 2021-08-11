@@ -4,9 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CompteComptableTest {
 
@@ -14,26 +12,24 @@ public class CompteComptableTest {
     public void getByNumeroTest() {
 
         CompteComptable compteComptable1 = new CompteComptable();
-        compteComptable1.setNumero(401);
+        compteComptable1.setNumero(606);
+        compteComptable1.setLibelle("AC");
         CompteComptable compteComptable2 = new CompteComptable();
-        compteComptable2.setNumero(411);
+        compteComptable2.setNumero(706);
+        compteComptable2.setLibelle("VE");
         CompteComptable compteComptable3 = new CompteComptable();
-        compteComptable3.setNumero(401);
+        compteComptable3.setNumero(512);
+        compteComptable3.setLibelle("BQ");
         CompteComptable compteComptable4 = new CompteComptable();
-        compteComptable4.setNumero(4456);
+        compteComptable4.setNumero(401);
+        compteComptable4.setLibelle("OD");
         ArrayList<CompteComptable> list = new ArrayList<>();
         list.add(compteComptable1);
         list.add(compteComptable2);
         list.add(compteComptable3);
         list.add(compteComptable4);
-        CompteComptable vRetour = null;
-        for (CompteComptable vBean : list) {
-            if (vBean != null && Objects.equals(vBean.getNumero(), list.size())) {
-                vRetour = vBean;
-                break;
-            }
-        }
-        System.out.println(vRetour);
+        CompteComptable fourthNumber = list.get(3);
+        Assertions.assertThat(CompteComptable.getByNumero(list, 401)).isEqualTo(fourthNumber);
     }
 
     /*
