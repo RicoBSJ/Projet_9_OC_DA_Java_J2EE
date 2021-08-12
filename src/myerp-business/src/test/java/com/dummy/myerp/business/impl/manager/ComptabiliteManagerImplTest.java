@@ -10,6 +10,7 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -40,7 +41,11 @@ public class ComptabiliteManagerImplTest {
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableTest() throws Exception {
-        this.checkEcritureComptableUnitTest();
+        this.checkEcritureComptableUnitViolationTest();
+        this.checkEcritureComptableUnitRG2Test();
+        this.checkEcritureComptableUnitRG3Test();
+        this.checkEcritureComptableUnitRG5Test();
+        this.checkEcritureComptableUnitRG6Test();
         this.checkEcritureComptableContextTest();
     }
 
@@ -50,17 +55,12 @@ public class ComptabiliteManagerImplTest {
         return vFactory.getValidator();
     }
 
-    @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitViolationTest() throws Exception {
+    @Test
+    public void checkEcritureComptableUnitViolationTest() {
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
         Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
-        if (!vViolations.isEmpty()) {
-            throw new FunctionalException("L'écriture comptable ne respecte pas les règles de gestion.",
-                    new ConstraintViolationException(
-                            "L'écriture comptable ne respecte pas les contraintes de validation",
-                            vViolations));
-        }
+        Assertions.assertThat(!vViolations.isEmpty()).isTrue();
     }
 
     @Test
@@ -72,13 +72,11 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null, new BigDecimal(123)));
 
-        if (!pEcritureComptable.isEquilibree()) {
-            throw new AssertionError("L'écriture comptable n'est pas équilibrée.");
-        }
+        Assertions.assertThat(!pEcritureComptable.isEquilibree()).isFalse();
     }
 
-    @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitRG3Test() throws Exception {
+    @Test
+    public void checkEcritureComptableUnitRG3Test() {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -103,12 +101,9 @@ public class ComptabiliteManagerImplTest {
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
         // avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (pEcritureComptable.getListLigneEcriture().size() < 2
+        Assertions.assertThat(pEcritureComptable.getListLigneEcriture().size() < 2
                 || vNbrCredit < 1
-                || vNbrDebit < 1) {
-            throw new FunctionalException(
-                    "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
-        }
+                || vNbrDebit < 1).isTrue();
     }
 
     @Test(expected = FunctionalException.class)
@@ -130,9 +125,9 @@ public class ComptabiliteManagerImplTest {
         String anneeEcriture = date.substring(3);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
-        String code = reference.substring(0,2);
+        String code = reference.substring(0, 2);
 
-        if(!anneeEcriture.equals(anneeRef)){
+        if (!anneeEcriture.equals(anneeRef)) {
             throw new FunctionalException("L'année dans la référence ne correspond pas à la date de l'écriture");
         }
 
@@ -140,6 +135,25 @@ public class ComptabiliteManagerImplTest {
 
         if (!pEcritureComptable.getJournal().getCode().equals(code)) {
             throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
+        }
+    }
+
+    @Test
+    public void checkEcritureComptableUnitRG6Test() {
+        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        EcritureComptable vECRef = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00002");
+        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
+            Assertions.assertThat(pEcritureComptable.getId() == null
+                    || !pEcritureComptable.getId().equals(vECRef.getId())).isTrue();
         }
     }
 
