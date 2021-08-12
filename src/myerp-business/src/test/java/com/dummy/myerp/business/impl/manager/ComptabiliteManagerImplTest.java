@@ -26,9 +26,6 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
-        /*Dans le code d'origine, la référence n'est pas setté
-        Rajout du setReference au format code du journal dans lequel figure l'écriture,
-        suivi de l'année et d'un numéro de séquence*/
         pEcritureComptable.setReference("AC-2019/00001");
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -41,12 +38,18 @@ public class ComptabiliteManagerImplTest {
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableTest() throws Exception {
+        // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
         this.checkEcritureComptableUnitViolationTest();
+        // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
         this.checkEcritureComptableUnitRG2Test();
+        // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         this.checkEcritureComptableUnitRG3Test();
-        this.checkEcritureComptableUnitRG5Test();
+        // Vérifier que l'année dans la référence correspond bien à la date de l'écriture
+        this.checkEcritureComptableUnitRG5Test1();
+        // Vérification du Code du journal et de celui spécifié dans la référence
+        this.checkEcritureComptableUnitRG5Test2();
+        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         this.checkEcritureComptableUnitRG6Test();
-        this.checkEcritureComptableContextTest();
     }
 
     protected Validator getConstraintValidator() {
@@ -57,6 +60,7 @@ public class ComptabiliteManagerImplTest {
 
     @Test
     public void checkEcritureComptableUnitViolationTest() {
+        // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
         Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
@@ -86,6 +90,9 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
 
         int vNbrCredit = 0;
         int vNbrDebit = 0;
@@ -103,12 +110,12 @@ public class ComptabiliteManagerImplTest {
         // avec un montant au débit et un montant au crédit ce n'est pas valable
         Assertions.assertThat(pEcritureComptable.getListLigneEcriture().size() < 2
                 || vNbrCredit < 1
-                || vNbrDebit < 1).isTrue();
+                || vNbrDebit < 1).isFalse();
     }
 
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitRG5Test() throws Exception {
-
+    public void checkEcritureComptableUnitRG5Test1() throws Exception {
+        // RG_Compta_5 : Format et contenu de la référence
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
@@ -121,59 +128,48 @@ public class ComptabiliteManagerImplTest {
                 null, null,
                 new BigDecimal(123)));
 
-        String date = String.valueOf(pEcritureComptable.getDate());
-        String anneeEcriture = date.substring(3);
-        String reference = pEcritureComptable.getReference();
-        String anneeRef = reference.substring(3, 7);
-        String code = reference.substring(0, 2);
+        // Vérifier que l'année dans la référence correspond bien à la date de l'écriture
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+    }
 
-        if (!anneeEcriture.equals(anneeRef)) {
-            throw new FunctionalException("L'année dans la référence ne correspond pas à la date de l'écriture");
-        }
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG5Test2() throws Exception {
+        // RG_Compta_5 : Format et contenu de la référence
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
 
         // Vérification du Code du journal et de celui spécifié dans la référence
-
-        if (!pEcritureComptable.getJournal().getCode().equals(code)) {
-            throw new FunctionalException("Le code du journal spécifié dans la référence ne correspond pas");
-        }
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
     @Test
     public void checkEcritureComptableUnitRG6Test() {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setId(1);
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
         pEcritureComptable.setReference("AC-2019/00001");
         EcritureComptable vECRef = new EcritureComptable();
+        vECRef.setId(2);
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
-        pEcritureComptable.setReference("AC-2019/00002");
-        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
-            Assertions.assertThat(pEcritureComptable.getId() == null
-                    || !pEcritureComptable.getId().equals(vECRef.getId())).isTrue();
+        pEcritureComptable.setReference("AC-2020/00002");
+        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference(), vECRef.getReference())) {
+            Assertions.assertThat(pEcritureComptable.getId() == null || vECRef.getId() == null
+                    || !pEcritureComptable.getId().equals(vECRef.getId())).isFalse();
         }
-    }
-
-    @Test
-    public void checkEcritureComptableContextTest() {
-        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
-        EcritureComptable pEcritureComptable1 = new EcritureComptable();
-        pEcritureComptable1.setReference("AC-2019/00001");
-        EcritureComptable pEcritureComptable2 = new EcritureComptable();
-        pEcritureComptable2.setReference("OD-2019/00001");
-        EcritureComptable pEcritureComptable3 = new EcritureComptable();
-        pEcritureComptable3.setReference("AC-2019/00001");
-        EcritureComptable pEcritureComptable4 = new EcritureComptable();
-        pEcritureComptable4.setReference("BQ-2019/00001");
-        ArrayList<String> list = new ArrayList<>();
-        list.add(pEcritureComptable1.getReference());
-        list.add(pEcritureComptable2.getReference());
-        list.add(pEcritureComptable3.getReference());
-        list.add(pEcritureComptable4.getReference());
-        Assertions.assertThat(Collections.frequency(list, "AC-2019/00001")).isGreaterThan(1);
     }
 
     @Test
