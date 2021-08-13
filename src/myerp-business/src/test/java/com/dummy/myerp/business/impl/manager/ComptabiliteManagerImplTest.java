@@ -10,18 +10,18 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-
 import javax.validation.*;
+
+import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
 
 public class ComptabiliteManagerImplTest {
 
     private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitTest() throws Exception {
+    public void checkEcritureComptableUnitTest() throws FunctionalException {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
@@ -33,22 +33,15 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        manager.checkEcritureComptableUnit(pEcritureComptable);
+        manager.checkEcritureComptable(pEcritureComptable);
     }
 
-    protected Validator getConstraintValidator() {
-        Configuration<?> vConfiguration = Validation.byDefaultProvider().configure();
-        ValidatorFactory vFactory = vConfiguration.buildValidatorFactory();
-        return vFactory.getValidator();
-    }
-
-    @Test
-    public void checkEcritureComptableUnitViolationTest() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitViolationTest() throws FunctionalException {
         // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
         EcritureComptable pEcritureComptable;
         pEcritureComptable = new EcritureComptable();
-        Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
-        Assertions.assertThat(!vViolations.isEmpty()).isTrue();
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -69,8 +62,8 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableUnitRG3Test() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG3Test() throws FunctionalException {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -80,7 +73,7 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
-        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        /*pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
 
@@ -95,40 +88,30 @@ public class ComptabiliteManagerImplTest {
                     BigDecimal.ZERO)) != 0) {
                 vNbrDebit++;
             }
-        }
+        }*/
         // On test le nombre de lignes car si l'écriture à une seule ligne
         // avec un montant au débit et un montant au crédit ce n'est pas valable
-        Assertions.assertThat((pEcritureComptable.getListLigneEcriture().size() < 2
+        /*Assertions.assertThat((pEcritureComptable.getListLigneEcriture().size() < 2
                 || vNbrCredit < 1
-                || vNbrDebit < 1)).isFalse();
+                || vNbrDebit < 1)).isFalse();*/
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableUnitRG5Test1() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG5Test1() throws FunctionalException {
         // RG_Compta_5 : Format et contenu de la référence
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
         pEcritureComptable.setReference("AC-2019/00001");
-        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
 
         // Vérifier que l'année dans la référence correspond bien à la date de l'écriture
-        String date = String.valueOf(pEcritureComptable.getDate());
-        String anneeEcriture = date.substring(3);
-        String reference = pEcritureComptable.getReference();
-        String anneeRef = reference.substring(3, 7);
-
-        Assertions.assertThat(!anneeEcriture.equals(anneeRef)).isTrue();
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableUnitRG5Test2() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG5Test2() throws FunctionalException {
         // RG_Compta_5 : Format et contenu de la référence
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -143,13 +126,11 @@ public class ComptabiliteManagerImplTest {
                 new BigDecimal(123)));
 
         // Vérification du Code du journal et de celui spécifié dans la référence
-        String reference = pEcritureComptable.getReference();
-        String code = reference.substring(0,2);
-        Assertions.assertThat((!pEcritureComptable.getJournal().getCode().equals(code))).isFalse();
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
     @Test
-    public void checkEcritureComptableUnitRG6Test() {
+    public void checkEcritureComptableContextTest() throws FunctionalException {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setId(1);
@@ -162,27 +143,40 @@ public class ComptabiliteManagerImplTest {
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
-        pEcritureComptable.setReference("AC-2020/00002");
-        if (StringUtils.isNoneEmpty(pEcritureComptable.getReference(), vECRef.getReference())) {
-            Assertions.assertThat(pEcritureComptable.getId() == null || vECRef.getId() == null
-                    || !pEcritureComptable.getId().equals(vECRef.getId())).isFalse();
+        pEcritureComptable.setReference("AC-2019/00001");
+        if (pEcritureComptable.getReference().equals(vECRef.getReference())) {
+            manager.checkEcritureComptable(pEcritureComptable);
         }
     }
 
+    public List<EcritureComptable> getListEcritureComptable() {
+        return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
+    }
+
     @Test
-    public void addReferenceTest() throws FunctionalException {
+    public void addReferenceTest() {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
-        pEcritureComptable.setReference("AC-2021/00001");
+        pEcritureComptable.setReference("AC-2019/00001");
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-
-        manager.checkEcritureComptableUnit(pEcritureComptable);
+        /*EcritureComptable vLastEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);*/
+        String currentYear = String.valueOf(pEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
+        String vRef = pEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
+        if (pEcritureComptable.getReference().contains(currentYear)) {
+            String sequence = pEcritureComptable.getReference().substring(8);
+            Integer sequencenb = Integer.parseInt(sequence) + 1;
+            vRef += String.format("%05d", sequencenb);
+        } else {
+            vRef += "00001";
+        }
+        pEcritureComptable.setReference(vRef);
+        manager.addReference(pEcritureComptable);
     }
 }
