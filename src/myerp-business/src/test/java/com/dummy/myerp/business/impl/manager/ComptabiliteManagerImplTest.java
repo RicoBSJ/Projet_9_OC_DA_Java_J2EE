@@ -36,22 +36,6 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableTest() {
-        // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
-        this.checkEcritureComptableUnitViolationTest();
-        // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
-        this.checkEcritureComptableUnitRG2Test();
-        // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
-        this.checkEcritureComptableUnitRG3Test();
-        // Vérifier que l'année dans la référence correspond bien à la date de l'écriture
-        this.checkEcritureComptableUnitRG5Test1();
-        // Vérification du Code du journal et de celui spécifié dans la référence
-        this.checkEcritureComptableUnitRG5Test2();
-        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
-        this.checkEcritureComptableUnitRG6Test();
-    }
-
     protected Validator getConstraintValidator() {
         Configuration<?> vConfiguration = Validation.byDefaultProvider().configure();
         ValidatorFactory vFactory = vConfiguration.buildValidatorFactory();
@@ -67,16 +51,22 @@ public class ComptabiliteManagerImplTest {
         Assertions.assertThat(!vViolations.isEmpty()).isTrue();
     }
 
-    @Test
-    public void checkEcritureComptableUnitRG2Test() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG2Test() throws FunctionalException {
         // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
         EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.setReference("AC-2021/00001");
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123), null));
+                null, new BigDecimal(123),
+                null));
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null, new BigDecimal(123)));
+                null, null,
+                new BigDecimal(342)));
 
-        Assertions.assertThat(!pEcritureComptable.isEquilibree()).isFalse();
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 
     @Test
@@ -180,28 +170,19 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void addReferenceTest() {
+    public void addReferenceTest() throws FunctionalException {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         pEcritureComptable.setDate(new Date());
         pEcritureComptable.setLibelle("Libelle");
-        pEcritureComptable.setReference("AC-2019/00001");
+        pEcritureComptable.setReference("AC-2021/00001");
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
         pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        String currentYear = String.valueOf(pEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
-        String vRef = pEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
 
-        if (pEcritureComptable.getReference().contains(currentYear)) {
-            String sequence = pEcritureComptable.getReference().substring(8);
-            Integer sequencenb = Integer.parseInt(sequence) + 1;
-            vRef += String.format("%05d", sequencenb);
-        } else {
-            vRef += "00001";
-        }
-        pEcritureComptable.setReference(vRef);
+        manager.checkEcritureComptableUnit(pEcritureComptable);
     }
 }

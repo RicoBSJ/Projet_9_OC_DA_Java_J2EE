@@ -152,7 +152,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // Vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
 
         String date = String.valueOf(pEcritureComptable.getDate());
-        String anneeEcriture = date.substring(3);
+        String anneeEcriture = date.substring(date.length()-4);
         String reference = pEcritureComptable.getReference();
         String anneeRef = reference.substring(3, 7);
         String code = reference.substring(0,2);
