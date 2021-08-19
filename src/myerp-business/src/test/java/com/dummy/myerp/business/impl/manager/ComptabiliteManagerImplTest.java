@@ -2,13 +2,9 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.*;
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.business.impl.BusinessProxyImpl;
 import com.dummy.myerp.business.impl.TransactionManager;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -16,7 +12,6 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
-import org.apache.commons.lang3.ObjectUtils;
 import java.sql.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
@@ -25,10 +20,29 @@ import org.junit.Test;
 
 import javax.validation.Validator;
 
-import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
-
 public class ComptabiliteManagerImplTest {
 
+    private AbstractBusinessManager businessManager = new AbstractBusinessManager() {
+        @Override
+        protected BusinessProxy getBusinessProxy() {
+            return super.getBusinessProxy();
+        }
+
+        @Override
+        protected DaoProxy getDaoProxy() {
+            return super.getDaoProxy();
+        }
+
+        @Override
+        protected TransactionManager getTransactionManager() {
+            return super.getTransactionManager();
+        }
+
+        @Override
+        protected Validator getConstraintValidator() {
+            return super.getConstraintValidator();
+        }
+    };
     private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
     private EcritureComptable trueEcritureComptable;
     private EcritureComptable desEcritureComptable;
@@ -110,9 +124,19 @@ public class ComptabiliteManagerImplTest {
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableTest() throws FunctionalException {
-        this.checkEcritureComptableUnitTest();
-        this.checkEcritureComptableContextIdNull();
-        this.checkEcritureComptableContextNoUnique();
+        EcritureComptable tEcritureComptable;
+        tEcritureComptable = new EcritureComptable();
+        tEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        tEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
+        tEcritureComptable.setLibelle("Libelle");
+        tEcritureComptable.setReference("AC-2121/00001");
+        tEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        tEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptable(tEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
