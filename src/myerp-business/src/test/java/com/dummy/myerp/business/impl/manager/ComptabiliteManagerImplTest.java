@@ -1,142 +1,63 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-import com.dummy.myerp.business.contrat.BusinessProxy;
-import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.business.impl.TransactionManager;
-import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
-import java.sql.Date;
-import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.Assertions;
+
+import java.time.ZoneId;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.validation.Validator;
+import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ComptabiliteManagerImplTest {
 
-    private AbstractBusinessManager businessManager = new AbstractBusinessManager() {
-        @Override
-        protected BusinessProxy getBusinessProxy() {
-            return super.getBusinessProxy();
-        }
-
-        @Override
-        protected DaoProxy getDaoProxy() {
-            return super.getDaoProxy();
-        }
-
-        @Override
-        protected TransactionManager getTransactionManager() {
-            return super.getTransactionManager();
-        }
-
-        @Override
-        protected Validator getConstraintValidator() {
-            return super.getConstraintValidator();
-        }
-    };
     private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
-    private EcritureComptable trueEcritureComptable;
-    private EcritureComptable desEcritureComptable;
-    private EcritureComptable oneLineEcritureComptable;
-    private EcritureComptable badRefEcritureComptable;
-    private EcritureComptable noLineEcritureComptable;
-    private EcritureComptable badYearEcritureComptable;
+    private EcritureComptable vEcritureComptable;
 
     @Before
     public void setUpBeforeEach() {
-        trueEcritureComptable = new EcritureComptable();
-        trueEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        trueEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        trueEcritureComptable.setLibelle("Libelle");
-        trueEcritureComptable.setReference("AC-2121/00001");
-        trueEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        trueEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
 
-        oneLineEcritureComptable = new EcritureComptable();
-        oneLineEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        oneLineEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        oneLineEcritureComptable.setLibelle("Libelle");
-        oneLineEcritureComptable.setReference("AC-2121/00001");
-        oneLineEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-
-        desEcritureComptable = new EcritureComptable();
-        desEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        desEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        desEcritureComptable.setLibelle("Libelle");
-        desEcritureComptable.setReference("AC-2121/00001");
-        desEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        desEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(432)));
-
-        badRefEcritureComptable = new EcritureComptable();
-        badRefEcritureComptable.setJournal(new JournalComptable("BQ", "Banque"));
-        badRefEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        badRefEcritureComptable.setLibelle("Libelle");
-        badRefEcritureComptable.setReference("AC-2121/00001");
-        badRefEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        trueEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
-
-        noLineEcritureComptable = new EcritureComptable();
-        noLineEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        noLineEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        noLineEcritureComptable.setLibelle("Libelle");
-        noLineEcritureComptable.setReference("AC-2121/00001");
-
-        badYearEcritureComptable = new EcritureComptable();
-        badYearEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        badYearEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        badYearEcritureComptable.setLibelle("Libelle");
-        badYearEcritureComptable.setReference("AC-2019/00001");
-        badYearEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        badYearEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setId(11);
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
     }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitTest() throws FunctionalException {
-        manager.checkEcritureComptable(trueEcritureComptable);
+        vEcritureComptable.setReference("AC-2121/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableTest() throws FunctionalException {
-        EcritureComptable tEcritureComptable;
-        tEcritureComptable = new EcritureComptable();
-        tEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        tEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        tEcritureComptable.setLibelle("Libelle");
-        tEcritureComptable.setReference("AC-2121/00001");
-        tEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.setReference("AC-2121/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
-        tEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        manager.checkEcritureComptable(tEcritureComptable);
+        manager.checkEcritureComptable(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -150,7 +71,14 @@ public class ComptabiliteManagerImplTest {
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2Test() throws FunctionalException {
         // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
-        manager.checkEcritureComptableUnit(desEcritureComptable);
+        vEcritureComptable.setReference("AC-2121/00003");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(432)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -159,14 +87,18 @@ public class ComptabiliteManagerImplTest {
 
         // On test le nombre de lignes car si l'écriture à une seule ligne
         // avec un montant au débit et un montant au crédit ce n'est pas valable
-        manager.checkEcritureComptableUnit(oneLineEcritureComptable);
+        vEcritureComptable.setReference("AC-2121/00002");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG3TestCreateLine() throws FunctionalException {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
-
-        manager.checkEcritureComptableUnit(noLineEcritureComptable);
+        vEcritureComptable.setReference("AC-2121/00005");
+        manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -174,7 +106,14 @@ public class ComptabiliteManagerImplTest {
         // RG_Compta_5 : Format et contenu de la référence
 
         // Vérifier que l'année dans la référence correspond bien à la date de l'écriture
-        manager.checkEcritureComptableUnit(badYearEcritureComptable);
+        vEcritureComptable.setReference("AC-2019/00006");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -182,6 +121,19 @@ public class ComptabiliteManagerImplTest {
         // RG_Compta_5 : Format et contenu de la référence
 
         // Vérification du Code du journal et de celui spécifié dans la référence
+        EcritureComptable badRefEcritureComptable;
+        badRefEcritureComptable = new EcritureComptable();
+        badRefEcritureComptable.setId(14);
+        badRefEcritureComptable.setJournal(new JournalComptable("BQ", "Banque"));
+        badRefEcritureComptable.setDate(new Date());
+        badRefEcritureComptable.setLibelle("Libelle");
+        badRefEcritureComptable.setReference("AC-2121/00004");
+        badRefEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        badRefEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
         manager.checkEcritureComptableUnit(badRefEcritureComptable);
     }
 
@@ -189,34 +141,133 @@ public class ComptabiliteManagerImplTest {
     public void checkEcritureComptableContextIdNull() {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable vECRef = new EcritureComptable();
-        Assertions.assertThat(vECRef.getId() == null).isTrue();
+        assertThat(vECRef.getId() == null).isTrue();
     }
 
-    @Test
-    public void checkEcritureComptableContextNoUnique() {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableContextNoUnique() throws FunctionalException {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable vECRef = new EcritureComptable();
+        vECRef.setId(7);
         vECRef.setJournal(new JournalComptable("BQ", "Banque"));
-        vECRef.setDate(Date.valueOf(LocalDate.now()));
+        vECRef.setDate(new Date());
         vECRef.setLibelle("Libelle");
-        vECRef.setReference("BQ-2019/00001");
-        if (StringUtils.isNoneEmpty(trueEcritureComptable.getReference())) {
+        vECRef.setReference("BQ-2021/00001");
 
-            // Si l'écriture à vérifier est une nouvelle écriture (id == null),
-            // ou si elle ne correspond pas à l'écriture trouvée (id != idECRef),
-            // c'est qu'il y a déjà une autre écriture avec la même référence
-            Assertions.assertThat(trueEcritureComptable.getId() == null
-                    || !trueEcritureComptable.getId().equals(vECRef.getId())).isTrue();
+        vEcritureComptable.setReference("AC-2121/00001");
+
+        manager.checkEcritureComptable(vECRef);
+        assertThat(vECRef.getReference().equals(vEcritureComptable.getReference())).isFalse();
+    }
+
+    public List<EcritureComptable> getListEcritureComptable() {
+        return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
+    }
+
+
+    public void addReference() {
+
+        EcritureComptable nEcritureComptable = new EcritureComptable();
+        nEcritureComptable.setId(12);
+        nEcritureComptable.setJournal(new JournalComptable("BQ", "Banque"));
+        nEcritureComptable.setDate(new Date());
+        nEcritureComptable.setLibelle("Libelle");
+        nEcritureComptable.setReference("BQ-2121/00002");
+        nEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(342),
+                null));
+        nEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(342)));
+        getDaoProxy().getComptabiliteDao().insertEcritureComptable(nEcritureComptable);
+        vEcritureComptable.setReference("AC-2121/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        getDaoProxy().getComptabiliteDao().insertEcritureComptable(vEcritureComptable);
+
+        nEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
+        String currentYear = String.valueOf(vEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
+        String vRef = vEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
+        if (nEcritureComptable.getReference().contains(currentYear)) {
+            String sequence = nEcritureComptable.getReference().substring(8);
+            Integer sequencenb = Integer.parseInt(sequence) + 1;
+            vRef += String.format("%05d", sequencenb);
+        } else {
+            vRef += "00001";
+        }
+        vEcritureComptable.setReference(vRef);
+        manager.addReference(vEcritureComptable);
+    }
+
+    @Mock
+    List<String> mockedList;
+
+    @Test
+    public void whenUseMockAnnotation_thenMockIsInjected() {
+        mockedList.add("one");
+        Mockito.verify(mockedList).add("one");
+        assertThat(0).isEqualTo(mockedList.size());
+
+        Mockito.when(mockedList.size()).thenReturn(100);
+        assertThat(100).isEqualTo(mockedList.size());
+    }
+
+    /*@Spy
+    List<String> spiedList = new ArrayList<>();
+
+    @Test
+    public void whenUseSpyAnnotation_thenSpyIsInjectedCorrectly() {
+        spiedList.add("one");
+        spiedList.add("two");
+
+        Mockito.verify(spiedList).add("one");
+        Mockito.verify(spiedList).add("two");
+
+        assertThat(2).isEqualTo(spiedList.size());
+
+        Mockito.doReturn(100).when(spiedList).size();
+        assertThat(100).isEqualTo(spiedList.size());
+    }*/
+
+    @Captor
+    ArgumentCaptor argCaptor;
+
+    @Test
+    public void whenUseCaptorAnnotation_thenTheSam() {
+        mockedList.add("one");
+        Mockito.verify(mockedList).add((String) argCaptor.capture());
+
+        assertThat("one").isEqualTo(argCaptor.getValue());
+    }
+
+    public static class MyDictionary {
+        Map<String, String> wordMap;
+
+        public MyDictionary() {
+            wordMap = new HashMap<>();
+        }
+        public void add(final String word, final String meaning) {
+            wordMap.put(word, meaning);
+        }
+        public String getMeaning(final String word) {
+            return wordMap.get(word);
         }
     }
 
-    @Test
-    public void addReference() {
-        EcritureComptable pEcritureComptable = new EcritureComptable();
-        pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        pEcritureComptable.setDate(Date.valueOf(LocalDate.now()));
-        pEcritureComptable.setLibelle("Libelle");
+    @Mock
+    Map<String, String> wordMap;
 
-        Assertions.assertThat("AC-2019/00001".equals(pEcritureComptable.getReference())).isFalse();
+    @InjectMocks
+    MyDictionary dic = new MyDictionary();
+
+    @Test
+    public void whenUseInjectMocksAnnotation_thenCorrect() {
+        Mockito.when(wordMap.get("aWord")).thenReturn("aMeaning");
+
+        assertThat("aMeaning").isEqualTo(dic.getMeaning("aWord"));
     }
 }
