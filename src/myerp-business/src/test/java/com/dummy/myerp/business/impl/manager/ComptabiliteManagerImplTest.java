@@ -2,6 +2,11 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 
+import com.dummy.myerp.business.contrat.BusinessProxy;
+import com.dummy.myerp.business.impl.TransactionManager;
+import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
+import com.dummy.myerp.consumer.dao.impl.DaoProxyImpl;
+import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
@@ -12,22 +17,63 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+
+import com.dummy.myerp.technical.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
+import javax.validation.Validator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComptabiliteManagerImplTest {
 
+    static class ComptabiliteManagerTest extends ComptabiliteManagerImpl{
+        @Override
+        protected BusinessProxy getBusinessProxy() {
+            return super.getBusinessProxy();
+        }
+
+        @Override
+        protected DaoProxy getDaoProxy() {
+            return super.getDaoProxy();
+        }
+
+        @Override
+        protected TransactionManager getTransactionManager() {
+            return super.getTransactionManager();
+        }
+
+        @Override
+        protected Validator getConstraintValidator() {
+            return super.getConstraintValidator();
+        }
+    }
+
     private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
     private EcritureComptable vEcritureComptable;
+    private ComptabiliteManagerTest mockComptabiliteManagerTest;
+    private ComptabiliteManagerTest spyComptabiliteManagerTest;
+    private ComptabiliteDaoImpl mockComptabiliteDao;
+    private ComptabiliteDaoImpl spyComptabiliteDao;
+    private DaoProxyImpl mockDaoProxy;
+    private DaoProxyImpl spyDaoProxy;
 
     @Before
     public void setUpBeforeEach() {
+
+        mockComptabiliteManagerTest = mock(ComptabiliteManagerTest.class);
+        spyComptabiliteManagerTest = spy(mockComptabiliteManagerTest);
+
+        mockComptabiliteDao = mock(ComptabiliteDaoImpl.class);
+        spyComptabiliteDao = spy(mockComptabiliteDao);
+
+        mockDaoProxy = mock(DaoProxyImpl.class);
+        spyDaoProxy = spy(mockDaoProxy);
 
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(11);
@@ -48,8 +94,8 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
-    @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableTest() throws FunctionalException {
+    @Test
+    public void checkEcritureComptableTest() throws NotFoundException {
         vEcritureComptable.setReference("AC-2121/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -57,7 +103,12 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        manager.checkEcritureComptable(vEcritureComptable);
+
+        doReturn(mockDaoProxy).when(spyComptabiliteManagerTest).getDaoProxy();
+        doReturn(spyComptabiliteDao).when(spyDaoProxy).getComptabiliteDao();
+        doReturn(null).when(spyComptabiliteDao).getEcritureComptableByRef(anyString());
+
+        assertThatCode(() -> {spyComptabiliteManagerTest.checkEcritureComptable(vEcritureComptable);}).doesNotThrowAnyException();
     }
 
     @Test(expected = FunctionalException.class)
@@ -160,13 +211,9 @@ public class ComptabiliteManagerImplTest {
         assertThat(vECRef.getReference().equals(vEcritureComptable.getReference())).isFalse();
     }
 
-    public List<EcritureComptable> getListEcritureComptable() {
-        return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
-    }
-
-
+    @Test
     public void addReference() {
-
+        //First scripture
         EcritureComptable nEcritureComptable = new EcritureComptable();
         nEcritureComptable.setId(12);
         nEcritureComptable.setJournal(new JournalComptable("BQ", "Banque"));
@@ -179,7 +226,7 @@ public class ComptabiliteManagerImplTest {
         nEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(342)));
-        getDaoProxy().getComptabiliteDao().insertEcritureComptable(nEcritureComptable);
+        //Second scripture
         vEcritureComptable.setReference("AC-2121/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -187,9 +234,9 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        getDaoProxy().getComptabiliteDao().insertEcritureComptable(vEcritureComptable);
 
-        nEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);
+        /*nEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);*/
+
         String currentYear = String.valueOf(vEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
         String vRef = vEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
         if (nEcritureComptable.getReference().contains(currentYear)) {
@@ -201,73 +248,5 @@ public class ComptabiliteManagerImplTest {
         }
         vEcritureComptable.setReference(vRef);
         manager.addReference(vEcritureComptable);
-    }
-
-    @Mock
-    List<String> mockedList;
-
-    @Test
-    public void whenUseMockAnnotation_thenMockIsInjected() {
-        mockedList.add("one");
-        Mockito.verify(mockedList).add("one");
-        assertThat(0).isEqualTo(mockedList.size());
-
-        Mockito.when(mockedList.size()).thenReturn(100);
-        assertThat(100).isEqualTo(mockedList.size());
-    }
-
-    /*@Spy
-    List<String> spiedList = new ArrayList<>();
-
-    @Test
-    public void whenUseSpyAnnotation_thenSpyIsInjectedCorrectly() {
-        spiedList.add("one");
-        spiedList.add("two");
-
-        Mockito.verify(spiedList).add("one");
-        Mockito.verify(spiedList).add("two");
-
-        assertThat(2).isEqualTo(spiedList.size());
-
-        Mockito.doReturn(100).when(spiedList).size();
-        assertThat(100).isEqualTo(spiedList.size());
-    }*/
-
-    @Captor
-    ArgumentCaptor argCaptor;
-
-    @Test
-    public void whenUseCaptorAnnotation_thenTheSam() {
-        mockedList.add("one");
-        Mockito.verify(mockedList).add((String) argCaptor.capture());
-
-        assertThat("one").isEqualTo(argCaptor.getValue());
-    }
-
-    public static class MyDictionary {
-        Map<String, String> wordMap;
-
-        public MyDictionary() {
-            wordMap = new HashMap<>();
-        }
-        public void add(final String word, final String meaning) {
-            wordMap.put(word, meaning);
-        }
-        public String getMeaning(final String word) {
-            return wordMap.get(word);
-        }
-    }
-
-    @Mock
-    Map<String, String> wordMap;
-
-    @InjectMocks
-    MyDictionary dic = new MyDictionary();
-
-    @Test
-    public void whenUseInjectMocksAnnotation_thenCorrect() {
-        Mockito.when(wordMap.get("aWord")).thenReturn("aMeaning");
-
-        assertThat("aMeaning").isEqualTo(dic.getMeaning("aWord"));
     }
 }
