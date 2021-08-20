@@ -17,11 +17,8 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.doReturn;
 
-import com.dummy.myerp.technical.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,8 +69,8 @@ public class ComptabiliteManagerImplTest {
         mockComptabiliteDao = mock(ComptabiliteDaoImpl.class);
         spyComptabiliteDao = spy(mockComptabiliteDao);
 
-        mockDaoProxy = mock(DaoProxyImpl.class);
-        spyDaoProxy = spy(mockDaoProxy);
+        /*mockDaoProxy = mock(DaoProxyImpl.class);
+        spyDaoProxy = spy(mockDaoProxy);*/
 
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(11);
@@ -94,8 +91,8 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableTest() throws NotFoundException {
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableTest() throws FunctionalException {
         vEcritureComptable.setReference("AC-2121/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -103,12 +100,7 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-
-        doReturn(mockDaoProxy).when(spyComptabiliteManagerTest).getDaoProxy();
-        doReturn(spyComptabiliteDao).when(spyDaoProxy).getComptabiliteDao();
-        doReturn(null).when(spyComptabiliteDao).getEcritureComptableByRef(anyString());
-
-        assertThatCode(() -> {spyComptabiliteManagerTest.checkEcritureComptable(vEcritureComptable);}).doesNotThrowAnyException();
+        manager.checkEcritureComptable(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
@@ -247,6 +239,6 @@ public class ComptabiliteManagerImplTest {
             vRef += "00001";
         }
         vEcritureComptable.setReference(vRef);
-        manager.addReference(vEcritureComptable);
+        /*manager.addReference(vEcritureComptable);*/
     }
 }
