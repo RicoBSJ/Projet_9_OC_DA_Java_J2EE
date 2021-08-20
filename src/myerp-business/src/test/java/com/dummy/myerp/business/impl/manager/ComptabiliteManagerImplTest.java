@@ -2,11 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 
-import com.dummy.myerp.business.contrat.BusinessProxy;
-import com.dummy.myerp.business.impl.TransactionManager;
-import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
-import com.dummy.myerp.consumer.dao.impl.DaoProxyImpl;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -20,12 +16,12 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.dummy.myerp.technical.exception.NotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.Validator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComptabiliteManagerImplTest {
@@ -148,15 +144,8 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(badRefEcritureComptable);
     }
 
-    @Test
-    public void checkEcritureComptableContextIdNull() {
-        // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
-        EcritureComptable vECRef = new EcritureComptable();
-        assertThat(vECRef.getId() == null).isTrue();
-    }
-
     @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableContextNoUnique() throws FunctionalException {
+    public void checkEcritureComptableContextTest() throws NotFoundException, FunctionalException {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         EcritureComptable vECRef = new EcritureComptable();
         vECRef.setId(7);
@@ -164,11 +153,15 @@ public class ComptabiliteManagerImplTest {
         vECRef.setDate(new Date());
         vECRef.setLibelle("Libelle");
         vECRef.setReference("BQ-2021/00001");
-
         vEcritureComptable.setReference("AC-2121/00001");
+        if (StringUtils.isNoneEmpty(vEcritureComptable.getReference())) {
+            // Recherche d'une écriture ayant la même référence
+            doReturn(vECRef).when(comptabiliteDao).getEcritureComptableByRef(vEcritureComptable.getReference());
 
-        manager.checkEcritureComptable(vECRef);
-        assertThat(vECRef.getReference().equals(vEcritureComptable.getReference())).isFalse();
+            assertThat(vEcritureComptable.getId() == null
+                    || !vEcritureComptable.getId().equals(vECRef.getId())).isTrue();
+        }
+        manager.checkEcritureComptableContext(vEcritureComptable);
     }
 
     @Test
