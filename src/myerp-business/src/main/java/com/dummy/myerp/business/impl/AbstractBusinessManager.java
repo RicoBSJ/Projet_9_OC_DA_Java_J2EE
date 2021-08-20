@@ -62,7 +62,7 @@ public abstract class AbstractBusinessManager {
      * @return {@link DaoProxy}
      */
     @ExcludeFromJacocoGeneratedReport
-    protected DaoProxy getDaoProxy() {
+    public DaoProxy getDaoProxy() {
         return daoProxy;
     }
 

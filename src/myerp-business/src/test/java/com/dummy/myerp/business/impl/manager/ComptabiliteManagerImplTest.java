@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
 import com.dummy.myerp.business.impl.TransactionManager;
+import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.consumer.dao.impl.DaoProxyImpl;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
@@ -29,49 +30,16 @@ import javax.validation.Validator;
 @RunWith(MockitoJUnitRunner.class)
 public class ComptabiliteManagerImplTest {
 
-    static class ComptabiliteManagerTest extends ComptabiliteManagerImpl{
-        @Override
-        protected BusinessProxy getBusinessProxy() {
-            return super.getBusinessProxy();
-        }
-
-        @Override
-        protected DaoProxy getDaoProxy() {
-            return super.getDaoProxy();
-        }
-
-        @Override
-        protected TransactionManager getTransactionManager() {
-            return super.getTransactionManager();
-        }
-
-        @Override
-        protected Validator getConstraintValidator() {
-            return super.getConstraintValidator();
-        }
-    }
-
-    private final ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
+    private ComptabiliteManagerImpl manager = spy(new ComptabiliteManagerImpl());
     private EcritureComptable vEcritureComptable;
-    private ComptabiliteManagerTest mockComptabiliteManagerTest;
-    private ComptabiliteManagerTest spyComptabiliteManagerTest;
-    private ComptabiliteDaoImpl mockComptabiliteDao;
-    private ComptabiliteDaoImpl spyComptabiliteDao;
-    private DaoProxyImpl mockDaoProxy;
-    private DaoProxyImpl spyDaoProxy;
+    private DaoProxy daoProxy;
+    private ComptabiliteDaoImpl comptabiliteDao;
 
     @Before
     public void setUpBeforeEach() {
-
-        mockComptabiliteManagerTest = mock(ComptabiliteManagerTest.class);
-        spyComptabiliteManagerTest = spy(mockComptabiliteManagerTest);
-
-        mockComptabiliteDao = mock(ComptabiliteDaoImpl.class);
-        spyComptabiliteDao = spy(mockComptabiliteDao);
-
-        /*mockDaoProxy = mock(DaoProxyImpl.class);
-        spyDaoProxy = spy(mockDaoProxy);*/
-
+        comptabiliteDao = mock(ComptabiliteDaoImpl.class);
+        daoProxy = () -> comptabiliteDao;
+        doReturn(daoProxy).when(manager).getDaoProxy();
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(11);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -204,7 +172,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void addReference() {
+    public void addReferenceTest() {
         //First scripture
         EcritureComptable nEcritureComptable = new EcritureComptable();
         nEcritureComptable.setId(12);
@@ -226,7 +194,8 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-
+        doNothing().when(comptabiliteDao).insertEcritureComptable(any());
+        doReturn(List.of(nEcritureComptable)).when(manager).getListEcritureComptable();
         /*nEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);*/
 
         String currentYear = String.valueOf(vEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
@@ -239,6 +208,6 @@ public class ComptabiliteManagerImplTest {
             vRef += "00001";
         }
         vEcritureComptable.setReference(vRef);
-        /*manager.addReference(vEcritureComptable);*/
+        manager.addReference(vEcritureComptable);
     }
 }
