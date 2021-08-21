@@ -42,7 +42,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /**
      * Constructeur.
      */
-    protected ComptabiliteDaoImpl() {
+    public ComptabiliteDaoImpl() {
         super();
     }
 
@@ -57,8 +57,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     public List<CompteComptable> getListCompteComptable() {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
         CompteComptableRM vRM = new CompteComptableRM();
-        List<CompteComptable> vList = vJdbcTemplate.query(SQLgetListCompteComptable, vRM);
-        return vList;
+        return vJdbcTemplate.query(SQLgetListCompteComptable, vRM);
     }
 
 
@@ -71,8 +70,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     public List<JournalComptable> getListJournalComptable() {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
         JournalComptableRM vRM = new JournalComptableRM();
-        List<JournalComptable> vList = vJdbcTemplate.query(SQLgetListJournalComptable, vRM);
-        return vList;
+        return vJdbcTemplate.query(SQLgetListJournalComptable, vRM);
     }
 
     // ==================== EcritureComptable - GET ====================
@@ -86,8 +84,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     public List<EcritureComptable> getListEcritureComptable() {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
         EcritureComptableRM vRM = new EcritureComptableRM();
-        List<EcritureComptable> vList = vJdbcTemplate.query(SQLgetListEcritureComptable, vRM);
-        return vList;
+        return vJdbcTemplate.query(SQLgetListEcritureComptable, vRM);
     }
 
 

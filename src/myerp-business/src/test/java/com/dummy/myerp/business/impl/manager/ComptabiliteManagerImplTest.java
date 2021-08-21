@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 
+import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -13,7 +14,6 @@ import com.dummy.myerp.technical.exception.FunctionalException;
 import java.time.ZoneId;
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.dummy.myerp.technical.exception.NotFoundException;
@@ -64,6 +64,11 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
+        /*
+        doReturn(vDaoProxyMock).when(vComptabiliteManagerSpy).getDaoProxy();
+        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
+        doReturn(null).when(vComptabiliteDaoSpy).getEcritureComptableByRef(anyString());
+         */
         manager.checkEcritureComptable(vEcritureComptable);
     }
 
@@ -157,9 +162,6 @@ public class ComptabiliteManagerImplTest {
         if (StringUtils.isNoneEmpty(vEcritureComptable.getReference())) {
             // Recherche d'une écriture ayant la même référence
             doReturn(vECRef).when(comptabiliteDao).getEcritureComptableByRef(vEcritureComptable.getReference());
-
-            assertThat(vEcritureComptable.getId() == null
-                    || !vEcritureComptable.getId().equals(vECRef.getId())).isTrue();
         }
         manager.checkEcritureComptableContext(vEcritureComptable);
     }
@@ -189,7 +191,6 @@ public class ComptabiliteManagerImplTest {
                 new BigDecimal(123)));
         doNothing().when(comptabiliteDao).insertEcritureComptable(any());
         doReturn(List.of(nEcritureComptable)).when(manager).getListEcritureComptable();
-        /*nEcritureComptable = getListEcritureComptable().get(getListEcritureComptable().size() - 1);*/
 
         String currentYear = String.valueOf(vEcritureComptable.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
         String vRef = vEcritureComptable.getJournal().getCode() + "-" + currentYear + "/";
