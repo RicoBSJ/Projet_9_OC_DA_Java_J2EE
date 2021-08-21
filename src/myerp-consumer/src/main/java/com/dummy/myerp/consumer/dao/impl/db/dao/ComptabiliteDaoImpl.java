@@ -42,7 +42,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /**
      * Constructeur.
      */
-    public ComptabiliteDaoImpl() {
+    protected ComptabiliteDaoImpl() {
         super();
     }
 
