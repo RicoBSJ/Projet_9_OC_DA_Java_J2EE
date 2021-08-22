@@ -36,9 +36,9 @@ public class ComptabiliteManagerImplTest {
     public void setUpBeforeEach() {
         comptabiliteDao = mock(ComptabiliteDaoImpl.class);
         comptabiliteDaoSpy = spy(comptabiliteDao);
-        daoProxy = () -> comptabiliteDao;
-        /*daoProxySpy = spy(daoProxy);*/
-        doReturn(daoProxy).when(manager).getDaoProxy();
+        /*daoProxy = () -> comptabiliteDao;*/
+        daoProxySpy = spy(daoProxy);
+        /*doReturn(daoProxy).when(manager).getDaoProxy();*/
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(11);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -59,7 +59,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void checkEcritureComptableTest() {
+    public void checkEcritureComptableTest() throws NotFoundException, FunctionalException {
         vEcritureComptable.setReference("AC-2021/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -67,14 +67,15 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        /*doReturn(comptabiliteDaoSpy).when(daoProxySpy).getComptabiliteDao();
-        doReturn(null).when(comptabiliteDaoSpy).getEcritureComptableByRef(anyString());*/
+        doReturn(comptabiliteDao).when(manager).getDaoProxy();
+        doReturn(comptabiliteDaoSpy).when(daoProxySpy).getComptabiliteDao();
+        doReturn(null).when(comptabiliteDaoSpy).getEcritureComptableByRef(vEcritureComptable.getReference());
         /*
         doReturn(vDaoProxyMock).when(vComptabiliteManagerSpy).getDaoProxy();
         doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
         doReturn(null).when(vComptabiliteDaoSpy).getEcritureComptableByRef(anyString());
          */
-        /*manager.checkEcritureComptable(vEcritureComptable);*/
+        manager.checkEcritureComptable(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
