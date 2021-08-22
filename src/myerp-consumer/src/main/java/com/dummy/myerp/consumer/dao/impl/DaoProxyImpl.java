@@ -7,7 +7,7 @@ import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 /**
  * <p>Implémentation du Proxy d'accès à la couche DAO.</p>
  */
-public class DaoProxyImpl implements DaoProxy {
+public final class DaoProxyImpl implements DaoProxy {
 
     // ==================== Attributs ====================
     /** {@link ComptabiliteDao} */

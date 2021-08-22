@@ -28,17 +28,13 @@ public class ComptabiliteManagerImplTest {
     private ComptabiliteManagerImpl manager = spy(new ComptabiliteManagerImpl());
     private EcritureComptable vEcritureComptable;
     private DaoProxy daoProxy;
-    private DaoProxy daoProxySpy;
     private ComptabiliteDaoImpl comptabiliteDao;
-    private ComptabiliteDaoImpl comptabiliteDaoSpy;
 
     @Before
     public void setUpBeforeEach() {
         comptabiliteDao = mock(ComptabiliteDaoImpl.class);
-        comptabiliteDaoSpy = spy(comptabiliteDao);
-        /*daoProxy = () -> comptabiliteDao;*/
-        daoProxySpy = spy(daoProxy);
-        /*doReturn(daoProxy).when(manager).getDaoProxy();*/
+        daoProxy = () -> comptabiliteDao;
+        doReturn(daoProxy).when(manager).getDaoProxy();
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(11);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -58,8 +54,20 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
-    @Test
+    @Test(expected = FunctionalException.class)
     public void checkEcritureComptableTest() throws NotFoundException, FunctionalException {
+        EcritureComptable vECRef = new EcritureComptable();
+        vECRef.setId(7);
+        vECRef.setJournal(new JournalComptable("BQ", "Banque"));
+        vECRef.setDate(new Date());
+        vECRef.setLibelle("Libelle");
+        vECRef.setReference("BQ-2021/00001");
+        vECRef.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(498),
+                null));
+        vECRef.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(498)));
         vEcritureComptable.setReference("AC-2021/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
@@ -67,14 +75,7 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        doReturn(comptabiliteDao).when(manager).getDaoProxy();
-        doReturn(comptabiliteDaoSpy).when(daoProxySpy).getComptabiliteDao();
-        doReturn(null).when(comptabiliteDaoSpy).getEcritureComptableByRef(vEcritureComptable.getReference());
-        /*
-        doReturn(vDaoProxyMock).when(vComptabiliteManagerSpy).getDaoProxy();
-        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
-        doReturn(null).when(vComptabiliteDaoSpy).getEcritureComptableByRef(anyString());
-         */
+        doReturn(vECRef).when(comptabiliteDao).getEcritureComptableByRef(vEcritureComptable.getReference());
         manager.checkEcritureComptable(vEcritureComptable);
     }
 
